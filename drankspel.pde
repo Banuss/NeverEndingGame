@@ -13,6 +13,7 @@ void setup() {
   background(0);
   Deck = schudden();
   Speelveld = generateSpeelveld();
+  Deck.addAll(Speelveld.get(1).bijFout(Deck.pop()));
 }
 
 ArrayDeque<Kaart> schudden()
