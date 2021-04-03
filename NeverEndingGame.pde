@@ -15,15 +15,15 @@ void setup() {
   Speelveld = generateSpeelveld();
   
   // even een voorbeeld
-  Kaart h2 = new Kaart(2);
-  Kaart s7 = new Kaart(7);
-  Kaart ha = new Kaart(14);
+  Kaart h2 = new Kaart("Harten", 2);
+  Kaart s7 = new Kaart("Schoppen", 7);
+  Kaart ha = new Kaart("Harten", 14);
   // er ligt een rij met een harten 2 in het midden
   Row r = new Row(h2);
   // Piet legt een kaart aan de linkerkant en gokt naturlijk op hoger (true)
   boolean gelukt = r.addLinks(s7, true);
   // Piet trok de schoppen 7 dus het is true
-  if (!gelukt) {/**/}
+  assert gelukt;
   // Piet legt nog een kaart aan de linkerkant en gokt op lager (false)
   gelukt = r.addLinks(ha, false);
   // Piet had het fout, het was een harten aas 
@@ -31,25 +31,32 @@ void setup() {
   {
     // hoeveel moet Piet drinken
     println(r.getSize());
-    // Maak de rij weer leeg
-    r.bijFout(ha);
+    // Maak de rij weer leeg en leg de getrokken harten aas in het midden
+    ArrayList<Kaart> eruit = r.bijFout(ha);
+    Deck.addAll(eruit);
   }
 }
 
 ArrayDeque<Kaart> schudden()
 {
-  ArrayDeque<Kaart> result = new ArrayDeque<Kaart>();
-  for (int i = 0; i < 54; i++)
+  String[] soorten = new String[] {"Schoppen", "Harten", "Klaver", "Ruiten"};
+  ArrayList<Kaart> kaarten = new ArrayList<>();
+  
+  for (String soort : soorten)
   {
-    result.add(new Kaart(i % 13 + 2));
+    for (int i = 2; i < 15; i++)
+    {
+      kaarten.add(new Kaart(soort, i));
+    }
   }
-//  schud(result);
-  return result;
+  schud(kaarten);
+  
+  return new ArrayDeque<>(kaarten);
 }
 
 ArrayList<Row> generateSpeelveld()
 {
-  ArrayList<Row> result = new ArrayList<Row>();
+  ArrayList<Row> result = new ArrayList<>();
   for (int i = 0; i < 5; i++)
   {
     result.add(new Row(Deck.pop()));
@@ -88,15 +95,15 @@ void drawKaart(Kaart kaart, int xPos, int yPos)
   rect(xPos, yPos, 100, 150, 7);
 }
 
-
-
-
 class Kaart
 {
+  final String soort;
   final int waarde;
   
-  Kaart(int waarde)
+  Kaart(String soort, int waarde)
   {
+    this.soort = soort;
+    
     assert waarde >= 2;
     assert waarde <= 14;
     this.waarde = waarde;
@@ -123,8 +130,8 @@ class Row
 
   Row(Kaart midden)
   {
-    Links = new ArrayList<Kaart>();
-    Rechts = new ArrayList<Kaart>();
+    Links = new ArrayList<>();
+    Rechts = new ArrayList<>();
     this.midden = midden;
   }
   
@@ -139,7 +146,7 @@ class Row
   */
   public ArrayList<Kaart> bijFout(Kaart nieuwMidden)
   {
-    ArrayList<Kaart> alle = new ArrayList<Kaart>(Links);
+    ArrayList<Kaart> alle = new ArrayList<>(Links);
     alle.add(midden);
     alle.addAll(Rechts);
     
