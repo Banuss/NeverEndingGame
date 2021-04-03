@@ -13,7 +13,27 @@ void setup() {
   background(0);
   Deck = schudden();
   Speelveld = generateSpeelveld();
-  Deck.addAll(Speelveld.get(1).bijFout(Deck.pop()));
+  
+  // even een voorbeeld
+  Kaart h2 = new Kaart(2);
+  Kaart s7 = new Kaart(7);
+  Kaart ha = new Kaart(14);
+  // er ligt een rij met een harten 2 in het midden
+  Row r = new Row(h2);
+  // Piet legt een kaart aan de linkerkant en gokt naturlijk op hoger (true)
+  boolean gelukt = r.addLinks(s7, true);
+  // Piet trok de schoppen 7 dus het is true
+  if (!gelukt) {/**/}
+  // Piet legt nog een kaart aan de linkerkant en gokt op lager (false)
+  gelukt = r.addLinks(ha, false);
+  // Piet had het fout, het was een harten aas 
+  if (!gelukt)
+  {
+    // hoeveel moet Piet drinken
+    println(r.getSize());
+    // Maak de rij weer leeg
+    r.bijFout(ha);
+  }
 }
 
 ArrayDeque<Kaart> schudden()
@@ -21,8 +41,9 @@ ArrayDeque<Kaart> schudden()
   ArrayDeque<Kaart> result = new ArrayDeque<Kaart>();
   for (int i = 0; i < 54; i++)
   {
-    result.add(new Kaart());
+    result.add(new Kaart(i % 13 + 2));
   }
+//  schud(result);
   return result;
 }
 
@@ -72,11 +93,27 @@ void drawKaart(Kaart kaart, int xPos, int yPos)
 
 class Kaart
 {
-  Kaart()
+  final int waarde;
+  
+  Kaart(int waarde)
   {
+    assert waarde >= 2;
+    assert waarde <= 14;
+    this.waarde = waarde;
   }
 }
 
+public void schud(ArrayList<Kaart> pak)
+{
+  // Fisher-Yates shuffle
+  for(int i = 0; i < pak.size(); i++)
+  {
+    int nieuwePositie = (int) (Math.random() * pak.size());
+    Kaart huidig = pak.get(i);
+    pak.set(i, pak.get(nieuwePositie));
+    pak.set(nieuwePositie, huidig);
+  }
+}
 
 class Row
 {
@@ -106,14 +143,7 @@ class Row
     alle.add(midden);
     alle.addAll(Rechts);
     
-    // Fisher-Yates shuffle
-    for(int i = 0; i < alle.size(); i++)
-    {
-      int nieuwePositie = (int) (Math.random() * alle.size());
-      Kaart huidig = alle.get(i);
-      alle.set(i, alle.get(nieuwePositie));
-      alle.set(nieuwePositie, huidig);
-    }
+    schud(alle);
     
     Links.clear();
     Rechts.clear();
@@ -122,19 +152,39 @@ class Row
     return alle;
   }
 
+  public boolean addLinks(Kaart add, boolean hoger)
+  {
+    return addGeneric(add, hoger, Links);
+  }
+
+  public boolean addRechts(Kaart add, boolean hoger)
+  {
+    return addGeneric(add, hoger, Rechts);
+  }
+  
+  private boolean addGeneric(Kaart add, boolean hoger, ArrayList<Kaart> kant)
+  {
+    // Vergelijk de kaart met de uiterste aan die kant (mogelijk het midden)
+    Kaart huidig = kant.isEmpty() ? midden : kant.get(kant.size() - 1);
+    
+    if (hoger)
+    {
+      // Als de waarde niet hoger is maar dat wel gegokt is, voeg het dan niet toe
+      if (!(add.waarde > huidig.waarde)) return false;
+    }
+    else
+    {
+      // idem dito voor lager gegokt
+      if (!(add.waarde < huidig.waarde)) return false;
+    }
+    
+    Links.add(add);
+    return true;
+  }
+  
   public Kaart getMidden()
   {
     return midden;
-  }
-
-  public void addLinks(Kaart add)
-  {
-    Links.add(add);
-  }
-
-  public void addRechts(Kaart add)
-  {
-    Rechts.add(add);
   }
 
   public  ArrayList<Kaart> getLinks()
