@@ -124,20 +124,20 @@ public void schud(ArrayList<Kaart> pak)
 
 class Row
 {
-  ArrayList<Kaart> Links;
-  ArrayList<Kaart> Rechts;
+  ArrayList<Kaart> links;
+  ArrayList<Kaart> rechts;
   Kaart midden;
 
   Row(Kaart midden)
   {
-    Links = new ArrayList<>();
-    Rechts = new ArrayList<>();
+    links = new ArrayList<>();
+    rechts = new ArrayList<>();
     this.midden = midden;
   }
   
   public int getSize()
   {
-    return 1 + Links.size() + Rechts.size();
+    return 1 + links.size() + rechts.size();
   }
   
   /**
@@ -146,14 +146,14 @@ class Row
   */
   public ArrayList<Kaart> bijFout(Kaart nieuwMidden)
   {
-    ArrayList<Kaart> alle = new ArrayList<>(Links);
+    ArrayList<Kaart> alle = new ArrayList<>(links);
     alle.add(midden);
-    alle.addAll(Rechts);
+    alle.addAll(rechts);
     
     schud(alle);
     
-    Links.clear();
-    Rechts.clear();
+    links.clear();
+    rechts.clear();
     midden = nieuwMidden;
     
     return alle;
@@ -161,12 +161,12 @@ class Row
 
   public boolean addLinks(Kaart add, boolean hoger)
   {
-    return addGeneric(add, hoger, Links);
+    return addGeneric(add, hoger, links);
   }
 
   public boolean addRechts(Kaart add, boolean hoger)
   {
-    return addGeneric(add, hoger, Rechts);
+    return addGeneric(add, hoger, rechts);
   }
   
   private boolean addGeneric(Kaart add, boolean hoger, ArrayList<Kaart> kant)
@@ -185,7 +185,7 @@ class Row
       if (!(add.waarde < huidig.waarde)) return false;
     }
     
-    Links.add(add);
+    kant.add(add);
     return true;
   }
   
@@ -196,11 +196,11 @@ class Row
 
   public  ArrayList<Kaart> getLinks()
   {
-    return Links;
+    return links;
   } 
 
   public  ArrayList<Kaart> getRechts()
   {
-    return Rechts;
+    return rechts;
   }
 }
