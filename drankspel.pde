@@ -89,6 +89,37 @@ class Row
     Rechts = new ArrayList<Kaart>();
     this.midden = midden;
   }
+  
+  public int getSize()
+  {
+    return 1 + Links.size() + Rechts.size();
+  }
+  
+  /**
+  * Roep dit aan om een nieuw midden te plaatsen
+  * Alle andere kaarten worden uit de rij gehaald en geschud zodat je ze onder op de stapel kan doen
+  */
+  public ArrayList<Kaart> bijFout(Kaart nieuwMidden)
+  {
+    ArrayList<Kaart> alle = new ArrayList<Kaart>(Links);
+    alle.add(midden);
+    alle.addAll(Rechts);
+    
+    // Fisher-Yates shuffle
+    for(int i = 0; i < alle.size(); i++)
+    {
+      int nieuwePositie = (int) (Math.random() * alle.size());
+      Kaart huidig = alle.get(i);
+      alle.set(i, alle.get(nieuwePositie));
+      alle.set(nieuwePositie, huidig);
+    }
+    
+    Links.clear();
+    Rechts.clear();
+    midden = nieuwMidden;
+    
+    return alle;
+  }
 
   public Kaart getMidden()
   {
