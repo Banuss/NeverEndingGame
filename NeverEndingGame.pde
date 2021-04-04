@@ -2,15 +2,15 @@ import java.util.ArrayDeque;
 
 ArrayDeque<Kaart> Deck;
 ArrayList<Row> Speelveld;
-int horizontaal = 1920;
-int verticaal = 1080;
 
 void setup() {
-  size(1920, 1080);
+  size(1024, 640);
   surface.setTitle("Never Ending Game...");
   surface.setLocation(100, 100);
   surface.setResizable(true);
   background(0);
+  
+  
   
   if (!cardfacesAreIntegrous()) generateCardfaces();
   
@@ -68,34 +68,37 @@ ArrayList<Row> generateSpeelveld()
 }
 
 void draw() { 
+  //Hoogte Kaart met 5 pixels tussenruimte
+  int kaartHoogte = ((height-30)/5);
+  int kaartBreedte = (kaartHoogte*2)/3;
   int xPos, yPos = 5;
   
   for (Row row : Speelveld) 
   {
-    xPos = (1920/2)-50;
-    drawKaart(row.getMidden(), xPos, yPos);
-    xPos = row.getLinks().size() * 110; 
+    xPos = (width/2)-(kaartBreedte/2)-5;
+    drawKaart(row.getMidden(), kaartBreedte, kaartHoogte, xPos, yPos);
+    xPos = row.getLinks().size() * (kaartBreedte + 5); 
     for (Kaart l : row.getLinks())
     {
-      drawKaart(l, xPos, yPos);
-      xPos += 110;
+      drawKaart(l, kaartBreedte, kaartHoogte, xPos, yPos);
+      xPos += kaartBreedte + 5;
     }
 
-    xPos = (1920/2)+60;
+    xPos = (width/2)+(kaartBreedte/2)+5;
     for (Kaart r : row.getRechts())
     {
-      drawKaart(r, xPos, yPos);
-      xPos += 110;
+      drawKaart(r, kaartBreedte, kaartHoogte, xPos, yPos);
+      xPos += kaartBreedte + 5;
     }
 
     //Volgende Rij + 10
-    yPos += 160;
+    yPos += (kaartHoogte +5);
   }
 }
 
-void drawKaart(Kaart kaart, int xPos, int yPos)
+void drawKaart(Kaart kaart, int kaartBreedte, int kaartHoogte, int xPos, int yPos)
 {
-  rect(xPos, yPos, 100, 150, 7);
+  rect(xPos, yPos, kaartBreedte, kaartHoogte, 7);
 }
 
 class Kaart
