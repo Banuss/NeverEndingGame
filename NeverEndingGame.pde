@@ -1,9 +1,11 @@
 import java.util.ArrayDeque;
 
 final int RIJEN = 5;
+final int SPACE = 10;
 
 ArrayDeque<Kaart> Deck;
 Row[] Speelveld;
+Plaats[] Plaatsen;
 
 void setup() {
   size(1024, 640);
@@ -12,12 +14,11 @@ void setup() {
   surface.setResizable(true);
   background(0);
   
-  
-  
   if (!cardfacesAreIntegrous()) generateCardfaces();
   
   Deck = createDeck();
   Speelveld = generateSpeelveld();
+  Plaatsen = generatePlaatsen();
   
   // even een voorbeeld
   Kaart h2 = new Kaart(null, 2);
@@ -43,6 +44,18 @@ void setup() {
   }
 }
 
+Plaats[] generatePlaatsen()
+{
+  Plaats[] result = new Plaats[RIJEN*2];
+  for (int i = 0; i < (result.length); i+=2)
+  {
+     int row = (i/2)+1;
+     result[i] = new Plaats(row,true);
+     result[i+1] = new Plaats(row,false);
+  }
+  return result;
+}
+
 Row[] generateSpeelveld()
 {
   Row[] result = new Row[RIJEN];
@@ -55,28 +68,28 @@ Row[] generateSpeelveld()
 
 void draw() { 
   //Hoogte Kaart met 5 pixels tussenruimte
-  int kaartHoogte = ((height-30)/5);
+  int kaartHoogte = ((height-(SPACE*(RIJEN+1)))/RIJEN);
   int kaartBreedte = (kaartHoogte*2)/3;
-  int xPos, yPos = 5;
+  int xPos, yPos = SPACE;
   int rowNum = 1;
   
   for (Row row : Speelveld) 
   { 
     //Teken Middelste Kaart
-    xPos = (width/2)-(kaartBreedte/2)-5;
+    xPos = (width/2)-(kaartBreedte/2)-SPACE;
     drawKaart(row.getMidden(), kaartBreedte, kaartHoogte, xPos, yPos);
     
-    xPos -=(row.getLinks().size() + 1) * (kaartBreedte + 5); 
+    xPos -=(row.getLinks().size() + 1) * (kaartBreedte + SPACE); 
     
     //Teken Plaats Links
-    drawPlaats(new Plaats(rowNum, true), kaartBreedte, kaartHoogte, xPos, yPos);
-    xPos += kaartBreedte + 5;
+    drawPlaats(Plaatsen[(rowNum*2)-1], kaartBreedte, kaartHoogte, xPos, yPos);
+    xPos += kaartBreedte + SPACE;
    
     //Teken Kaarten Links
     for (Kaart l : row.getLinks())
     {
       drawKaart(l, kaartBreedte, kaartHoogte, xPos, yPos);
-      xPos += kaartBreedte + 5;
+      xPos += kaartBreedte + SPACE;
     }
     
     //Teken Kaarten Rechts
@@ -84,31 +97,28 @@ void draw() {
     for (Kaart r : row.getRechts())
     {
       drawKaart(r, kaartBreedte, kaartHoogte, xPos, yPos);
-      xPos += kaartBreedte + 5;
+      xPos += kaartBreedte + SPACE;
     }
     
     //Teken Plaats Rechts
-    drawPlaats(new Plaats(rowNum, false), kaartBreedte, kaartHoogte, xPos, yPos);
-    xPos += kaartBreedte + 5;
+    drawPlaats(Plaatsen[rowNum*2], kaartBreedte, kaartHoogte, xPos, yPos);
+    xPos += kaartBreedte + SPACE;
 
-    //Volgende Rij + 10
-    yPos += (kaartHoogte +5);
+    //Volgende Rij
+    yPos += (kaartHoogte + SPACE);
   }
 }
 
 void drawKaart(Kaart kaart, int kaartBreedte, int kaartHoogte, int xPos, int yPos)
 {
   image(kaart.getImage(), xPos, yPos, kaartBreedte, kaartHoogte);
-  //fill(255,255,255);
-  //rect(xPos, yPos, kaartBreedte, kaartHoogte, 10);
 }
 
 void drawPlaats(Plaats plaats, int plaatsBreedte, int plaatsHoogte, int xPos, int yPos)
 {
-  fill(0, 20, 0);
+  fill(30, 20, 0);
   rect(xPos, yPos, plaatsBreedte, plaatsHoogte);
 }
-
 
 public void schud(ArrayList<Kaart> pak)
 {
