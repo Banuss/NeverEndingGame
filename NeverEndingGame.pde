@@ -1,7 +1,9 @@
 import java.util.ArrayDeque;
 
+final int RIJEN = 5;
+
 ArrayDeque<Kaart> Deck;
-ArrayList<Row> Speelveld;
+Row[] Speelveld;
 
 void setup() {
   size(1024, 640);
@@ -14,13 +16,13 @@ void setup() {
   
   if (!cardfacesAreIntegrous()) generateCardfaces();
   
-  Deck = schudden();
+  Deck = createDeck();
   Speelveld = generateSpeelveld();
   
   // even een voorbeeld
-  Kaart h2 = new Kaart("Harten", 2);
-  Kaart s7 = new Kaart("Schoppen", 7);
-  Kaart ha = new Kaart("Harten", 14);
+  Kaart h2 = new Kaart(null, 2);
+  Kaart s7 = new Kaart(null, 7);
+  Kaart ha = new Kaart(null, 14);
   // er ligt een rij met een harten 2 in het midden
   Row r = new Row(h2);
   // Piet legt een kaart aan de linkerkant en gokt naturlijk op hoger (true)
@@ -33,36 +35,20 @@ void setup() {
   if (!gelukt)
   {
     // hoeveel moet Piet drinken
-    println(r.getSize());
+    println("Piet moet " + r.getSize() + " keer drinken");
     // Maak de rij weer leeg en leg de getrokken harten aas in het midden
     ArrayList<Kaart> eruit = r.bijFout(ha);
+    // Doe de kaarten onderop de stapel, de kaarten zijn al geschud door row.bijFout
     Deck.addAll(eruit);
   }
 }
 
-ArrayDeque<Kaart> schudden()
+Row[] generateSpeelveld()
 {
-  String[] soorten = new String[] {"Schoppen", "Harten", "Klaver", "Ruiten"};
-  ArrayList<Kaart> kaarten = new ArrayList<Kaart>();
-  
-  for (String soort : soorten)
+  Row[] result = new Row[RIJEN];
+  for (int i = 0; i < result.length; i++)
   {
-    for (int i = 2; i < 15; i++)
-    {
-      kaarten.add(new Kaart(soort, i));
-    }
-  }
-  schud(kaarten);
-  
-  return new ArrayDeque<Kaart>(kaarten);
-}
-
-ArrayList<Row> generateSpeelveld()
-{
-  ArrayList<Row> result = new ArrayList<Row>();
-  for (int i = 0; i < 5; i++)
-  {
-    result.add(new Row(Deck.pop()));
+    result[i] = new Row(Deck.pop());
   }
   return result;
 }
@@ -101,21 +87,6 @@ void drawKaart(Kaart kaart, int kaartBreedte, int kaartHoogte, int xPos, int yPo
   rect(xPos, yPos, kaartBreedte, kaartHoogte, 7);
 }
 
-class Kaart
-{
-  final String soort;
-  final int waarde;
-  
-  Kaart(String soort, int waarde)
-  {
-    this.soort = soort;
-    
-    assert waarde >= 2;
-    assert waarde <= 14;
-    this.waarde = waarde;
-  }
-}
-
 public void schud(ArrayList<Kaart> pak)
 {
   // Fisher-Yates shuffle
@@ -125,88 +96,5 @@ public void schud(ArrayList<Kaart> pak)
     Kaart huidig = pak.get(i);
     pak.set(i, pak.get(nieuwePositie));
     pak.set(nieuwePositie, huidig);
-  }
-}
-
-class Row
-{
-  ArrayList<Kaart> links;
-  ArrayList<Kaart> rechts;
-  Kaart midden;
-
-  Row(Kaart midden)
-  {
-    links = new ArrayList<Kaart>();
-    rechts = new ArrayList<Kaart>();
-    this.midden = midden;
-  }
-  
-  public int getSize()
-  {
-    return 1 + links.size() + rechts.size();
-  }
-  
-  /**
-  * Roep dit aan om een nieuw midden te plaatsen
-  * Alle andere kaarten worden uit de rij gehaald en geschud zodat je ze onder op de stapel kan doen
-  */
-  public ArrayList<Kaart> bijFout(Kaart nieuwMidden)
-  {
-    ArrayList<Kaart> alle = new ArrayList<Kaart>(links);
-    alle.add(midden);
-    alle.addAll(rechts);
-    
-    schud(alle);
-    
-    links.clear();
-    rechts.clear();
-    midden = nieuwMidden;
-    
-    return alle;
-  }
-
-  public boolean addLinks(Kaart add, boolean hoger)
-  {
-    return addGeneric(add, hoger, links);
-  }
-
-  public boolean addRechts(Kaart add, boolean hoger)
-  {
-    return addGeneric(add, hoger, rechts);
-  }
-  
-  private boolean addGeneric(Kaart add, boolean hoger, ArrayList<Kaart> kant)
-  {
-    // Vergelijk de kaart met de uiterste aan die kant (mogelijk het midden)
-    Kaart huidig = kant.isEmpty() ? midden : kant.get(kant.size() - 1);
-    
-    if (hoger)
-    {
-      // Als de waarde niet hoger is maar dat wel gegokt is, voeg het dan niet toe
-      if (!(add.waarde > huidig.waarde)) return false;
-    }
-    else
-    {
-      // idem dito voor lager gegokt
-      if (!(add.waarde < huidig.waarde)) return false;
-    }
-    
-    kant.add(add);
-    return true;
-  }
-  
-  public Kaart getMidden()
-  {
-    return midden;
-  }
-
-  public  ArrayList<Kaart> getLinks()
-  {
-    return links;
-  } 
-
-  public  ArrayList<Kaart> getRechts()
-  {
-    return rechts;
   }
 }

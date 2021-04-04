@@ -60,3 +60,26 @@ boolean cardfacesAreIntegrous()
   }
   return true;
 }
+
+ArrayDeque<Kaart> createDeck()
+{
+  String[][] suits = getSuits();
+  String[] ranks = getRanks();
+  
+  ArrayList<Kaart> kaarten = new ArrayList<Kaart>();
+  
+  for (String[] suit : suits)
+  {
+    int waarde = 2;
+    for (String rank : ranks)
+    {
+      PImage image = loadImage(dataPath(cardsLocation+String.format(cardFilenameFormat, suit[1], rank)));
+      kaarten.add(new Kaart(image, waarde));
+      waarde++;
+    }
+  }
+  
+  schud(kaarten);
+  
+  return new ArrayDeque<Kaart>(kaarten);
+}
