@@ -11,6 +11,9 @@ void setup() {
   surface.setLocation(100, 100);
   surface.setResizable(true);
   background(0);
+  
+  if (!cardfacesAreIntegrous()) generateCardfaces();
+  
   Deck = schudden();
   Speelveld = generateSpeelveld();
   
@@ -40,7 +43,7 @@ void setup() {
 ArrayDeque<Kaart> schudden()
 {
   String[] soorten = new String[] {"Schoppen", "Harten", "Klaver", "Ruiten"};
-  ArrayList<Kaart> kaarten = new ArrayList<>();
+  ArrayList<Kaart> kaarten = new ArrayList<Kaart>();
   
   for (String soort : soorten)
   {
@@ -51,12 +54,12 @@ ArrayDeque<Kaart> schudden()
   }
   schud(kaarten);
   
-  return new ArrayDeque<>(kaarten);
+  return new ArrayDeque<Kaart>(kaarten);
 }
 
 ArrayList<Row> generateSpeelveld()
 {
-  ArrayList<Row> result = new ArrayList<>();
+  ArrayList<Row> result = new ArrayList<Row>();
   for (int i = 0; i < 5; i++)
   {
     result.add(new Row(Deck.pop()));
@@ -130,8 +133,8 @@ class Row
 
   Row(Kaart midden)
   {
-    links = new ArrayList<>();
-    rechts = new ArrayList<>();
+    links = new ArrayList<Kaart>();
+    rechts = new ArrayList<Kaart>();
     this.midden = midden;
   }
   
@@ -146,7 +149,7 @@ class Row
   */
   public ArrayList<Kaart> bijFout(Kaart nieuwMidden)
   {
-    ArrayList<Kaart> alle = new ArrayList<>(links);
+    ArrayList<Kaart> alle = new ArrayList<Kaart>(links);
     alle.add(midden);
     alle.addAll(rechts);
     

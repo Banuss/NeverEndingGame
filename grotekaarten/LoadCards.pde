@@ -3,7 +3,7 @@ PImage[] LoadCards() {
   String[] suit_names = {"S", "K", "R", "H"};
   String[] ranks = loadStrings("settings/settings.txt");
 
-  PImage[] cards = new PImage[52];
+  PImage[] cards = new PImage[suit_names.length * ranks.length];
   int card_index = 0;
 
   for ( String suit : suit_names ) {
