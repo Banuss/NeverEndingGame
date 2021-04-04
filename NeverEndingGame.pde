@@ -98,11 +98,14 @@ void draw() {
 
 void drawKaart(Kaart kaart, int kaartBreedte, int kaartHoogte, int xPos, int yPos)
 {
-  rect(xPos, yPos, kaartBreedte, kaartHoogte, 10);
+  image(kaart.getImage(), xPos, yPos, kaartBreedte, kaartHoogte);
+  //fill(255,255,255);
+  //rect(xPos, yPos, kaartBreedte, kaartHoogte, 10);
 }
 
 void drawPlaats(Plaats plaats, int plaatsBreedte, int plaatsHoogte, int xPos, int yPos)
 {
+  fill(0, 20, 0);
   rect(xPos, yPos, plaatsBreedte, plaatsHoogte);
 }
 

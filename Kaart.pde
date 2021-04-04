@@ -6,7 +6,6 @@ class Kaart
   Kaart(PImage image, int waarde)
   {
     this.image = image;
-    
     assert waarde >= 2;
     assert waarde <= 14;
     this.waarde = waarde;
@@ -17,5 +16,10 @@ class Kaart
     canvas.imageMode(CENTER);
     canvas.image(image, position.x, position.y, dimensions.x, dimensions.y);
     canvas.endDraw();
+  }
+  
+  PImage getImage()
+  {
+    return image;
   }
 }
