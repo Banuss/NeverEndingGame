@@ -66,7 +66,7 @@ ArrayDeque<Kaart> createDeck()
   String[][] suits = getSuits();
   String[] ranks = getRanks();
   
-  ArrayList<Kaart> kaarten = new ArrayList<Kaart>();
+  ArrayList<Kaart> kaarten = new ArrayList<Kaart>(suits.length * ranks.length);
   
   for (String[] suit : suits)
   {
