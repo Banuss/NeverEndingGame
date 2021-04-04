@@ -58,24 +58,38 @@ void draw() {
   int kaartHoogte = ((height-30)/5);
   int kaartBreedte = (kaartHoogte*2)/3;
   int xPos, yPos = 5;
+  int rowNum = 1;
   
   for (Row row : Speelveld) 
-  {
+  { 
+    //Teken Middelste Kaart
     xPos = (width/2)-(kaartBreedte/2)-5;
     drawKaart(row.getMidden(), kaartBreedte, kaartHoogte, xPos, yPos);
-    xPos = row.getLinks().size() * (kaartBreedte + 5); 
+    
+    xPos -=(row.getLinks().size() + 1) * (kaartBreedte + 5); 
+    
+    //Teken Plaats Links
+    drawPlaats(new Plaats(rowNum, true), kaartBreedte, kaartHoogte, xPos, yPos);
+    xPos += kaartBreedte + 5;
+   
+    //Teken Kaarten Links
     for (Kaart l : row.getLinks())
     {
       drawKaart(l, kaartBreedte, kaartHoogte, xPos, yPos);
       xPos += kaartBreedte + 5;
     }
-
-    xPos = (width/2)+(kaartBreedte/2)+5;
+    
+    //Teken Kaarten Rechts
+    xPos = (width/2)+(kaartBreedte/2);
     for (Kaart r : row.getRechts())
     {
       drawKaart(r, kaartBreedte, kaartHoogte, xPos, yPos);
       xPos += kaartBreedte + 5;
     }
+    
+    //Teken Plaats Rechts
+    drawPlaats(new Plaats(rowNum, false), kaartBreedte, kaartHoogte, xPos, yPos);
+    xPos += kaartBreedte + 5;
 
     //Volgende Rij + 10
     yPos += (kaartHoogte +5);
@@ -84,8 +98,14 @@ void draw() {
 
 void drawKaart(Kaart kaart, int kaartBreedte, int kaartHoogte, int xPos, int yPos)
 {
-  rect(xPos, yPos, kaartBreedte, kaartHoogte, 7);
+  rect(xPos, yPos, kaartBreedte, kaartHoogte, 10);
 }
+
+void drawPlaats(Plaats plaats, int plaatsBreedte, int plaatsHoogte, int xPos, int yPos)
+{
+  rect(xPos, yPos, plaatsBreedte, plaatsHoogte);
+}
+
 
 public void schud(ArrayList<Kaart> pak)
 {
