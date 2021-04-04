@@ -1,7 +1,12 @@
-class Kaart
+class Kaart implements Hitbox
 {
   final PImage image;
   final int waarde;
+  
+  int x1=0;
+  int y1=0;
+  int x2=0;
+  int y2=0;
   
   Kaart(PImage image, int waarde)
   {
@@ -22,4 +27,19 @@ class Kaart
   {
     return image;
   }
+  
+  boolean Match()
+  {
+   return (mouseX>=x1 && mouseX<=x2 && mouseY>=y1 && mouseY<=y2);
+  }
+  
+  void tekenen(int xPos, int yPos, int kaartBreedte, int kaartHoogte)
+  {
+      image(image, xPos, yPos, kaartBreedte, kaartHoogte);
+      this.x1 = xPos;
+      this.y1 = yPos;
+      this.x2 = xPos + kaartBreedte;
+      this.y2 = yPos + kaartHoogte;
+  }
+  
 }

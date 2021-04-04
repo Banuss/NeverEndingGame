@@ -1,0 +1,3 @@
+interface Hitbox {
+  boolean Match();  
+}

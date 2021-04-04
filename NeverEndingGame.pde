@@ -6,6 +6,7 @@ final int SPACE = 10;
 ArrayDeque<Kaart> Deck;
 Row[] Speelveld;
 Plaats[] Plaatsen;
+ArrayList<Hitbox> hitboxes = new ArrayList<Hitbox>();
 
 void setup() {
   size(1024, 640);
@@ -44,6 +45,16 @@ void setup() {
   }
 }
 
+Row[] generateSpeelveld()
+{
+  Row[] result = new Row[RIJEN];
+  for (int i = 0; i < result.length; i++)
+  {
+    result[i] = new Row(Deck.pop());
+  }
+  return result;
+}
+
 Plaats[] generatePlaatsen()
 {
   Plaats[] result = new Plaats[RIJEN*2];
@@ -56,18 +67,10 @@ Plaats[] generatePlaatsen()
   return result;
 }
 
-Row[] generateSpeelveld()
-{
-  Row[] result = new Row[RIJEN];
-  for (int i = 0; i < result.length; i++)
-  {
-    result[i] = new Row(Deck.pop());
-  }
-  return result;
-}
 
 void draw() { 
   //Hoogte Kaart met 5 pixels tussenruimte
+  hitboxes.clear();
   int kaartHoogte = ((height-(SPACE*(RIJEN+1)))/RIJEN);
   int kaartBreedte = (kaartHoogte*2)/3;
   int xPos, yPos = SPACE;
@@ -75,20 +78,23 @@ void draw() {
   
   for (Row row : Speelveld) 
   { 
+    
     //Teken Middelste Kaart
     xPos = (width/2)-(kaartBreedte/2)-SPACE;
-    drawKaart(row.getMidden(), kaartBreedte, kaartHoogte, xPos, yPos);
+    row.getMidden().tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
     
     xPos -=(row.getLinks().size() + 1) * (kaartBreedte + SPACE); 
     
     //Teken Plaats Links
-    drawPlaats(Plaatsen[(rowNum*2)-1], kaartBreedte, kaartHoogte, xPos, yPos);
+    Plaats pl = Plaatsen[(rowNum*2)-1];
+    hitboxes.add(pl);
+    pl.tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
     xPos += kaartBreedte + SPACE;
    
     //Teken Kaarten Links
     for (Kaart l : row.getLinks())
     {
-      drawKaart(l, kaartBreedte, kaartHoogte, xPos, yPos);
+      l.tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
       xPos += kaartBreedte + SPACE;
     }
     
@@ -96,12 +102,14 @@ void draw() {
     xPos = (width/2)+(kaartBreedte/2);
     for (Kaart r : row.getRechts())
     {
-      drawKaart(r, kaartBreedte, kaartHoogte, xPos, yPos);
+     r.tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
       xPos += kaartBreedte + SPACE;
     }
     
     //Teken Plaats Rechts
-    drawPlaats(Plaatsen[rowNum*2], kaartBreedte, kaartHoogte, xPos, yPos);
+    Plaats pr = Plaatsen[rowNum*2];
+    hitboxes.add(pr);
+    pr.tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
     xPos += kaartBreedte + SPACE;
 
     //Volgende Rij
@@ -109,16 +117,14 @@ void draw() {
   }
 }
 
-void drawKaart(Kaart kaart, int kaartBreedte, int kaartHoogte, int xPos, int yPos)
-{
-  image(kaart.getImage(), xPos, yPos, kaartBreedte, kaartHoogte);
+void mouseClicked() {
+  println("Geklikt op: "+mouseX + ":" + mouseY);
+  for (Hitbox hb : hitboxes)
+  {
+    hb.Match();
+  }
 }
 
-void drawPlaats(Plaats plaats, int plaatsBreedte, int plaatsHoogte, int xPos, int yPos)
-{
-  fill(30, 20, 0);
-  rect(xPos, yPos, plaatsBreedte, plaatsHoogte);
-}
 
 public void schud(ArrayList<Kaart> pak)
 {
