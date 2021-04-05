@@ -36,10 +36,5 @@ class Kaart implements Hitbox
   void tekenen(int xPos, int yPos, int kaartBreedte, int kaartHoogte)
   {
       image(image, xPos, yPos, kaartBreedte, kaartHoogte);
-      this.x1 = xPos;
-      this.y1 = yPos;
-      this.x2 = xPos + kaartBreedte;
-      this.y2 = yPos + kaartHoogte;
   }
-  
 }

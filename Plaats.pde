@@ -4,10 +4,10 @@ class Plaats implements Hitbox
   boolean links;
   boolean geselecteerd;
   
-  int x1=0;
-  int y1=0;
-  int x2=0;
-  int y2=0;
+  int x1;
+  int y1;
+  int x2;
+  int y2;
   
   Plaats(int rij, boolean links)
   {
@@ -30,18 +30,19 @@ class Plaats implements Hitbox
      geselecteerd = true;
      return true;
    }
+   geselecteerd = false;
    return false;
   }
   
   void tekenen(int xPos, int yPos, int plaatsBreedte, int plaatsHoogte)
   {
+      x1 = xPos; //<>//
+      y1 = yPos;
+      x2 = (xPos + plaatsBreedte);
+      y2 = (yPos + plaatsHoogte);
       if(geselecteerd)fill(0,100,0);
       else fill(0,20,0);
-      
       rect(xPos, yPos, plaatsBreedte, plaatsHoogte);
-      this.x1 = xPos;
-      this.y1 = yPos;
-      this.x2 = xPos + plaatsBreedte;
-      this.y2 = yPos + plaatsHoogte;
+      
   }
 }

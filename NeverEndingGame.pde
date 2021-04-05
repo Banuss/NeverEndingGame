@@ -58,11 +58,14 @@ Row[] generateSpeelveld()
 Plaats[] generatePlaatsen()
 {
   Plaats[] result = new Plaats[RIJEN*2];
-  for (int i = 0; i < (result.length); i+=2)
+  for (int i = 0; i < (result.length); i++)
   {
-     int row = (i/2)+1;
-     result[i] = new Plaats(row,true);
-     result[i+1] = new Plaats(row,false);
+     result[i] = new Plaats(i,true);
+     println(i);
+  }
+  for (int i = 0; i < (result.length); i++)
+  {
+     println(i);
   }
   return result;
 }
@@ -74,7 +77,7 @@ void draw() {
   int kaartHoogte = ((height-(SPACE*(RIJEN+1)))/RIJEN);
   int kaartBreedte = (kaartHoogte*2)/3;
   int xPos, yPos = SPACE;
-  int rowNum = 1;
+  int rowNum = 0;
   
   for (Row row : Speelveld) 
   { 
@@ -86,9 +89,9 @@ void draw() {
     xPos -=(row.getLinks().size() + 1) * (kaartBreedte + SPACE); 
     
     //Teken Plaats Links
-    Plaats pl = Plaatsen[(rowNum*2)-1];
-    hitboxes.add(pl);
-    pl.tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
+    
+    Plaatsen[rowNum].tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
+    hitboxes.add(Plaatsen[rowNum]);
     xPos += kaartBreedte + SPACE;
    
     //Teken Kaarten Links
@@ -102,18 +105,18 @@ void draw() {
     xPos = (width/2)+(kaartBreedte/2);
     for (Kaart r : row.getRechts())
     {
-     r.tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
+      r.tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
       xPos += kaartBreedte + SPACE;
     }
     
     //Teken Plaats Rechts
-    Plaats pr = Plaatsen[rowNum*2];
-    hitboxes.add(pr);
-    pr.tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
+    Plaatsen[rowNum+RIJEN].tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
+    hitboxes.add(Plaatsen[rowNum+RIJEN]);
     xPos += kaartBreedte + SPACE;
 
     //Volgende Rij
     yPos += (kaartHoogte + SPACE);
+    rowNum++;
   }
 }
 
