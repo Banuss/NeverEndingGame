@@ -76,8 +76,38 @@ void draw() {
   hitboxes.clear();
   int kaartHoogte = ((height-(SPACE*(RIJEN+1)))/RIJEN);
   int kaartBreedte = (kaartHoogte*2)/3;
-  int xPos, yPos = SPACE;
+  int xPos = SPACE, yPos = SPACE;
   int rowNum = 0;
+  
+  //Reserveer Links en Rechts Ruimte voor UI elements
+  
+  int uiHeight = (height-(3*SPACE))/2;
+  int uiWidth = uiHeight/4;
+  
+  //Links
+  knophogerlager hogerl = new knophogerlager(true);
+  hogerl.tekenen(xPos, yPos, uiWidth, uiHeight);
+  hitboxes.add(hogerl);
+  yPos += uiHeight + SPACE;
+  knophogerlager lagerl = new knophogerlager(false);
+  lagerl.tekenen(xPos, yPos, uiWidth, uiHeight);
+  hitboxes.add(lagerl);
+  yPos = SPACE;
+  
+  
+  //Rechts
+  xPos = width - uiWidth - SPACE;
+  yPos = SPACE;
+  knophogerlager lagerr= new knophogerlager(false);
+  lagerr.tekenen(xPos, yPos, uiWidth, uiHeight);
+  hitboxes.add(lagerr);
+  yPos += uiHeight + SPACE;
+  
+  knophogerlager hogerr = new knophogerlager(true);
+  hogerr.tekenen(xPos, yPos, uiWidth, uiHeight);
+  hitboxes.add(hogerr);
+
+  yPos = SPACE;
   
   for (Row row : Speelveld) 
   { 
@@ -117,6 +147,10 @@ void draw() {
     //Volgende Rij
     yPos += (kaartHoogte + SPACE);
     rowNum++;
+    
+    
+    //Temporair UI
+    
   }
 }
 
@@ -124,7 +158,10 @@ void mouseClicked() {
   println("Geklikt op: "+mouseX + ":" + mouseY);
   for (Hitbox hb : hitboxes)
   {
-    hb.Match();
+    if(hb.Match()&& hb instanceof Plaats)
+    {
+        
+    }
   }
 }
 
