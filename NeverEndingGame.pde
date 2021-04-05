@@ -96,26 +96,26 @@ void draw() {
   int uiWidth = uiHeight/4;
 
   //Links
-  knophogerlager hogerl = new knophogerlager(true);
-  hogerl.tekenen(xPos, yPos, uiWidth, uiHeight);
-  hitboxes.add(hogerl);
-  yPos += uiHeight + SPACE;
   knophogerlager lagerl = new knophogerlager(false);
   lagerl.tekenen(xPos, yPos, uiWidth, uiHeight);
   hitboxes.add(lagerl);
+  yPos += uiHeight + SPACE;
+  knophogerlager hogerl = new knophogerlager(true);
+  hogerl.tekenen(xPos, yPos, uiWidth, uiHeight);
+  hitboxes.add(hogerl);
   yPos = SPACE;
 
   xPos = width - uiWidth - SPACE;
   yPos = SPACE;
 
   //Rechts
-  knophogerlager lagerr= new knophogerlager(false);
-  lagerr.tekenen(xPos, yPos, uiWidth, uiHeight);
-  hitboxes.add(lagerr);
-  yPos += uiHeight + SPACE;
   knophogerlager hogerr = new knophogerlager(true);
   hogerr.tekenen(xPos, yPos, uiWidth, uiHeight);
   hitboxes.add(hogerr);
+  yPos += uiHeight + SPACE;
+  knophogerlager lagerr= new knophogerlager(false);
+  lagerr.tekenen(xPos, yPos, uiWidth, uiHeight);
+  hitboxes.add(lagerr);
   yPos = SPACE;
 
   for (Row row : Speelveld) 
