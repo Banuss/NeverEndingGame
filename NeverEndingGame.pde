@@ -1,7 +1,7 @@
 import java.util.ArrayDeque;
 
 final int RIJEN = 5;
-final int SPACE = 10;
+final int SPACE = 8;
 
 ArrayDeque<Kaart> Deck;
 Row[] Speelveld;
@@ -14,13 +14,13 @@ void setup() {
   surface.setLocation(100, 100);
   surface.setResizable(true);
   background(0);
-  
+
   if (!cardfacesAreIntegrous()) generateCardfaces();
-  
+
   Deck = createDeck();
   Speelveld = generateSpeelveld();
   Plaatsen = generatePlaatsen();
-  
+
   // even een voorbeeld
   Kaart h2 = new Kaart(null, 2);
   Kaart s7 = new Kaart(null, 7);
@@ -45,6 +45,17 @@ void setup() {
   }
 }
 
+void runGameLogic(Row rij, boolean links, boolean hoger)
+{
+  Kaart k = Deck.pop(); 
+  if (!rij.addKaart(k, links, hoger))
+  {
+    ArrayList<Kaart> eruit = rij.bijFout(k);
+    Deck.addAll(eruit);
+  }
+}
+
+
 Row[] generateSpeelveld()
 {
   Row[] result = new Row[RIJEN];
@@ -60,12 +71,12 @@ Plaats[] generatePlaatsen()
   Plaats[] result = new Plaats[RIJEN*2];
   for (int i = 0; i < (result.length); i++)
   {
-     result[i] = new Plaats(i,true);
-     println(i);
+    result[i] = new Plaats(i, true);
+    println(i);
   }
   for (int i = 0; i < (result.length); i++)
   {
-     println(i);
+    println(i);
   }
   return result;
 }
@@ -78,12 +89,12 @@ void draw() {
   int kaartBreedte = (kaartHoogte*2)/3;
   int xPos = SPACE, yPos = SPACE;
   int rowNum = 0;
-  
+
   //Reserveer Links en Rechts Ruimte voor UI elements
-  
+
   int uiHeight = (height-(3*SPACE))/2;
   int uiWidth = uiHeight/4;
-  
+
   //Links
   knophogerlager hogerl = new knophogerlager(true);
   hogerl.tekenen(xPos, yPos, uiWidth, uiHeight);
@@ -93,44 +104,42 @@ void draw() {
   lagerl.tekenen(xPos, yPos, uiWidth, uiHeight);
   hitboxes.add(lagerl);
   yPos = SPACE;
-  
-  
-  //Rechts
+
   xPos = width - uiWidth - SPACE;
   yPos = SPACE;
+
+  //Rechts
   knophogerlager lagerr= new knophogerlager(false);
   lagerr.tekenen(xPos, yPos, uiWidth, uiHeight);
   hitboxes.add(lagerr);
   yPos += uiHeight + SPACE;
-  
   knophogerlager hogerr = new knophogerlager(true);
   hogerr.tekenen(xPos, yPos, uiWidth, uiHeight);
   hitboxes.add(hogerr);
-
   yPos = SPACE;
-  
+
   for (Row row : Speelveld) 
   { 
-    
+
     //Teken Middelste Kaart
     xPos = (width/2)-(kaartBreedte/2)-SPACE;
     row.getMidden().tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
-    
+
     xPos -=(row.getLinks().size() + 1) * (kaartBreedte + SPACE); 
-    
+
     //Teken Plaats Links
-    
+
     Plaatsen[rowNum].tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
     hitboxes.add(Plaatsen[rowNum]);
     xPos += kaartBreedte + SPACE;
-   
+
     //Teken Kaarten Links
     for (Kaart l : row.getLinks())
     {
       l.tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
       xPos += kaartBreedte + SPACE;
     }
-    
+
     //Teken Kaarten Rechts
     xPos = (width/2)+(kaartBreedte/2);
     for (Kaart r : row.getRechts())
@@ -138,7 +147,7 @@ void draw() {
       r.tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
       xPos += kaartBreedte + SPACE;
     }
-    
+
     //Teken Plaats Rechts
     Plaatsen[rowNum+RIJEN].tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
     hitboxes.add(Plaatsen[rowNum+RIJEN]);
@@ -147,10 +156,9 @@ void draw() {
     //Volgende Rij
     yPos += (kaartHoogte + SPACE);
     rowNum++;
-    
-    
+
+
     //Temporair UI
-    
   }
 }
 
@@ -158,9 +166,15 @@ void mouseClicked() {
   println("Geklikt op: "+mouseX + ":" + mouseY);
   for (Hitbox hb : hitboxes)
   {
-    if(hb.Match()&& hb instanceof Plaats)
+    if (hb.Match()&& hb instanceof knophogerlager)
     {
-        
+      for (Plaats p : Plaatsen)
+      {
+        if (p.getSelect())
+        {
+          runGameLogic(Speelveld[p.getRij()], p.getLinks(), ((knophogerlager) hb).getHoger());
+        }
+      }
     }
   }
 }
@@ -169,7 +183,7 @@ void mouseClicked() {
 public void schud(ArrayList<Kaart> pak)
 {
   // Fisher-Yates shuffle
-  for(int i = 0; i < pak.size(); i++)
+  for (int i = 0; i < pak.size(); i++)
   {
     int nieuwePositie = (int) (Math.random() * pak.size());
     Kaart huidig = pak.get(i);

@@ -21,6 +21,17 @@ class Plaats implements Hitbox
     return geselecteerd;
   }
   
+  int getRij()
+  {
+    return rij;
+  }
+  
+  boolean getLinks()
+  {
+    return links;
+  }
+  
+  
   boolean Match()
   {
    if (mouseX>=x1 && mouseX<=x2 && mouseY>=y1 && mouseY<=y2)
@@ -34,7 +45,7 @@ class Plaats implements Hitbox
   
   void tekenen(int xPos, int yPos, int plaatsBreedte, int plaatsHoogte)
   {
-      x1 = xPos; //<>// //<>//
+      x1 = xPos; //<>//
       y1 = yPos;
       x2 = (xPos + plaatsBreedte);
       y2 = (yPos + plaatsHoogte);

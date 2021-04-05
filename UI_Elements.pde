@@ -10,6 +10,11 @@ class knophogerlager implements Hitbox
   {
     this.hoger = hoger;
   }
+  
+  boolean getHoger()
+  {
+    return hoger;
+  }
 
   boolean Match()
   {
