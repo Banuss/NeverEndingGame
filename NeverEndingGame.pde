@@ -69,20 +69,20 @@ Row[] generateSpeelveld()
 Plaats[] generatePlaatsen()
 {
   Plaats[] result = new Plaats[RIJEN*2];
-  for (int i = 0; i < (result.length); i++)
+  for (int i = 0; i < RIJEN ; i++)
   {
     result[i] = new Plaats(i, true);
-    println(i);
   }
-  for (int i = 0; i < (result.length); i++)
+  for (int i = 0; i < RIJEN ; i++)
   {
-    println(i);
+    result[i+RIJEN] = new Plaats(i, false);
   }
   return result;
 }
 
 
 void draw() { 
+  clear();
   //Hoogte Kaart met 5 pixels tussenruimte
   hitboxes.clear();
   int kaartHoogte = ((height-(SPACE*(RIJEN+1)))/RIJEN);
@@ -126,18 +126,18 @@ void draw() {
     row.getMidden().tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
 
     xPos -=(row.getLinks().size() + 1) * (kaartBreedte + SPACE); 
-
+    
     //Teken Plaats Links
-
     Plaatsen[rowNum].tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
     hitboxes.add(Plaatsen[rowNum]);
-    xPos += kaartBreedte + SPACE;
+    
+    xPos = (width/2)-(kaartBreedte/2)-kaartBreedte - SPACE - SPACE;
 
     //Teken Kaarten Links
     for (Kaart l : row.getLinks())
     {
       l.tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
-      xPos += kaartBreedte + SPACE;
+      xPos -= kaartBreedte + SPACE;
     }
 
     //Teken Kaarten Rechts
