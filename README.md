@@ -10,5 +10,5 @@
 - ~~Hoger of lager kunnen kiezen~~
 - Straf pop-up
 - volgende speler knop
-  - alleen na 3 beurten waarvan 1 bij de hoogste rij was
+  - ~~alleen na 3 beurten waarvan 1 bij de hoogste rij was~~
 
