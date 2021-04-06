@@ -20,41 +20,36 @@ void setup() {
   Deck = createDeck();
   Speelveld = generateSpeelveld();
   Plaatsen = generatePlaatsen();
-
-  // even een voorbeeld
-  Kaart h2 = new Kaart(null, 2);
-  Kaart s7 = new Kaart(null, 7);
-  Kaart ha = new Kaart(null, 14);
-  // er ligt een rij met een harten 2 in het midden
-  Row r = new Row(h2);
-  // Piet legt een kaart aan de linkerkant en gokt naturlijk op hoger (true)
-  boolean gelukt = r.addLinks(s7, true);
-  // Piet trok de schoppen 7 dus het is true
-  assert gelukt;
-  // Piet legt nog een kaart aan de linkerkant en gokt op lager (false)
-  gelukt = r.addLinks(ha, false);
-  // Piet had het fout, het was een harten aas 
-  if (!gelukt)
-  {
-    // hoeveel moet Piet drinken
-    println("Piet moet " + r.getSize() + " keer drinken");
-    // Maak de rij weer leeg en leg de getrokken harten aas in het midden
-    ArrayList<Kaart> eruit = r.bijFout(ha);
-    // Doe de kaarten onderop de stapel, de kaarten zijn al geschud door row.bijFout
-    Deck.addAll(eruit);
-  }
 }
+
+int kaartTellerDezeBeurt = 0;
+boolean langsteDezeBeurt = false;
 
 void runGameLogic(Row rij, boolean links, boolean hoger)
 {
-  Kaart k = Deck.pop(); 
+  kaartTellerDezeBeurt++;
+  langsteDezeBeurt = langsteDezeBeurt || isLangsteRij(rij);
+  // TODO: reset bij volgende speler
+  println("Dit is kaart #" + kaartTellerDezeBeurt + ". Er is " + (langsteDezeBeurt ? "" : "nog niet ") + "aan de langste rij gelegt");
+  
+  Kaart k = Deck.pop();
   if (!rij.addKaart(k, links, hoger))
   {
+    println("drink " + rij.getSize() + " keer");
     ArrayList<Kaart> eruit = rij.bijFout(k);
     Deck.addAll(eruit);
   }
 }
 
+boolean isLangsteRij(Row teVergelijken)
+{
+  int langste = 0;
+  for (Row rij : Speelveld)
+  {
+    langste = Math.max(langste, rij.getSize());
+  }
+  return langste == teVergelijken.getSize();
+}
 
 Row[] generateSpeelveld()
 {
