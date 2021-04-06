@@ -1,8 +1,49 @@
 import java.util.ArrayDeque;
 
-final int RIJEN = 5;
-final int MIN_KAARTEN_PER_BEURT = 3;
+int RIJEN;
+int MIN_KAARTEN_PER_BEURT;
+
+public static final String GAME_SETTINGS = "game.properties";
 final int SPACE = 8;
+
+loadSettings()
+{
+  //defaults
+  int RIJEN = 5;
+  int MIN_KAARTEN_PER_BEURT = 3;
+  
+  String gameSettingsLocation = dataPath("settings" + File.separator + GAME_SETTINGS);
+  String[] settings = loadStrings(gameSettingsLocation);
+  if (settings != null)
+  {
+    for (String setting : settings)
+    {
+      int separatorPos = setting.indexOf("=");
+      if (separatorPos > 1)
+      {
+        switch (setting.substring(0, separatorPos))
+        {
+          case "RIJEN":
+            RIJEN = Integer.parseInt(setting.substring(separatorPos+1));
+            break;
+          case "MIN_KAARTEN_PER_BEURT":
+            MIN_KAARTEN_PER_BEURT = Integer.parseInt(setting.substring(separatorPos+1));
+            break;
+          default:
+            println("Unknown setting: \"" + setting + "\"");
+            break;
+        }
+      }
+    }
+  }
+  else
+  {
+    saveStrings(gameSettingsLocation, new String[] {"RIJEN="+RIJEN,"MIN_KAARTEN_PER_BEURT="+MIN_KAARTEN_PER_BEURT});
+  }
+  
+  this.RIJEN = RIJEN;
+  this.MIN_KAARTEN_PER_BEURT = MIN_KAARTEN_PER_BEURT;
+}
 
 ArrayDeque<Kaart> Deck;
 Row[] Speelveld;
