@@ -38,3 +38,32 @@ class knophogerlager implements Hitbox
     rect(xPos, yPos, plaatsBreedte, plaatsHoogte);
   }
 }
+
+class knop implements Hitbox
+{
+  String name;
+  int x1;
+  int y1;
+  int x2;
+  int y2;
+  
+  knop(String name)
+  {
+    this.name = name;
+  }
+  
+  void tekenen(int xPos, int yPos, int knopBreedte, int knopHoogte)
+  {
+    x1 = xPos;
+    y1 = yPos;
+    x2 = (xPos + knopBreedte);
+    y2 = (yPos + knopHoogte);
+    fill(100, 100, 100);
+    rect(xPos, yPos, knopBreedte, knopHoogte);
+  }
+  
+  boolean Match()
+  {
+    return (mouseX>=x1 && mouseX<=x2 && mouseY>=y1 && mouseY<=y2);
+  }
+}
