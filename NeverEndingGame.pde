@@ -202,36 +202,39 @@ void draw() {
   }
 }
 
-void mouseClicked() {
+void mousePressed() {
   println("Geklikt op: "+mouseX + ":" + mouseY);
   for (Hitbox hb : hitboxes)
   {
-    if (hb.Match()&& hb instanceof strafvenster)
+    if (hb.Match())
     {
-      geefStrafWeer = false;
-      return;
-    } else if (hb.Match()&& hb instanceof knophogerlager)
-    {
-      for (Plaats p : Plaatsen)
+      if (hb instanceof strafvenster)
       {
-        if (p.getSelect())
+        geefStrafWeer = false;
+        return;
+      }
+      else if (hb instanceof knophogerlager)
+      {
+        for (Plaats p : Plaatsen)
         {
-          runGameLogic(Speelveld[p.getRij()], p.getLinks(), ((knophogerlager) hb).getHoger());
-          return;
+          if (p.getSelect())
+          {
+            runGameLogic(Speelveld[p.getRij()], p.getLinks(), ((knophogerlager) hb).getHoger());
+            return;
+          }
         }
       }
-    } else if (hb.Match()&& hb instanceof knop)
-    {
-      if (((knop) hb).getNaam().equals("volgende"));
+      else if (hb instanceof knop)
       {
-        volgendeSpeler();
-        return;
+        if (((knop) hb).getNaam().equals("volgende"));
+        {
+          volgendeSpeler();
+          return;
+        }
       }
     }
   }
 }
-
-
 
 public void schud(ArrayList<Kaart> pak)
 {
