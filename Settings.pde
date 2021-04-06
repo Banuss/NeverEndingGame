@@ -1,8 +1,9 @@
 public static final String GAME_SETTINGS = "game.properties";
 
-int RIJEN = 3;
-int MIN_KAARTEN_PER_BEURT = 5;
+int RIJEN = 5;
+int MIN_KAARTEN_PER_BEURT = 3;
 int PAKJES_KAARTEN = 1;
+boolean TEL_FOUT_MEE = true;
 boolean RESET_BIJ_FOUT = true;
 boolean VEREIS_LANGSTE_RIJ = true;
 
@@ -28,6 +29,9 @@ void loadSettings()
         case "PAKJES_KAARTEN":
           PAKJES_KAARTEN = Integer.parseInt(setting.substring(separatorPos+1));
           break;
+        case "TEL_FOUT_MEE":
+          TEL_FOUT_MEE = Boolean.parseBoolean(setting.substring(separatorPos+1));
+          break;
         case "RESET_BIJ_FOUT":
           RESET_BIJ_FOUT = Boolean.parseBoolean(setting.substring(separatorPos+1));
           break;
@@ -41,11 +45,19 @@ void loadSettings()
       }
     }
   }
-  saveStrings(gameSettingsLocation, new String[] {
+  settings = new String[] {
     "RIJEN=" + RIJEN,
     "MIN_KAARTEN_PER_BEURT=" + MIN_KAARTEN_PER_BEURT,
     "PAKJES_KAARTEN=" + PAKJES_KAARTEN,
+    "TEL_FOUT_MEE=" + TEL_FOUT_MEE,
     "RESET_BIJ_FOUT=" + RESET_BIJ_FOUT,
     "VEREIS_LANGSTE_RIJ=" + VEREIS_LANGSTE_RIJ
-  });
+  };
+  
+  for (String setting : settings)
+  {
+    println(setting);
+  }
+  
+  saveStrings(gameSettingsLocation, settings);
 }
