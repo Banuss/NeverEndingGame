@@ -1,48 +1,6 @@
 import java.util.ArrayDeque;
 
-int RIJEN;
-int MIN_KAARTEN_PER_BEURT;
-
-public static final String GAME_SETTINGS = "game.properties";
 final int SPACE = 8;
-
-void loadSettings()
-{
-  //defaults
-  int RIJEN = 5;
-  int MIN_KAARTEN_PER_BEURT = 3;
-
-  String gameSettingsLocation = dataPath("settings" + File.separator + GAME_SETTINGS);
-  String[] settings = loadStrings(gameSettingsLocation);
-  if (settings != null)
-  {
-    for (String setting : settings)
-    {
-      int separatorPos = setting.indexOf("=");
-      if (separatorPos > 1)
-      {
-        switch (setting.substring(0, separatorPos))
-        {
-        case "RIJEN":
-          RIJEN = Integer.parseInt(setting.substring(separatorPos+1));
-          break;
-        case "MIN_KAARTEN_PER_BEURT":
-          MIN_KAARTEN_PER_BEURT = Integer.parseInt(setting.substring(separatorPos+1));
-          break;
-        default:
-          println("Unknown setting: \"" + setting + "\"");
-          break;
-        }
-      }
-    }
-  } else
-  {
-    saveStrings(gameSettingsLocation, new String[] {"RIJEN="+RIJEN, "MIN_KAARTEN_PER_BEURT="+MIN_KAARTEN_PER_BEURT});
-  }
-
-  this.RIJEN = RIJEN;
-  this.MIN_KAARTEN_PER_BEURT = MIN_KAARTEN_PER_BEURT;
-}
 
 ArrayDeque<Kaart> Deck;
 Row[] Speelveld;
@@ -51,6 +9,7 @@ ArrayList<Hitbox> hitboxes = new ArrayList<Hitbox>();
 
 void setup() {
   loadSettings();
+  resetTellers();
   size(1024, 640);
   surface.setTitle("Never Ending Game...");
   surface.setLocation(100, 100);
@@ -64,9 +23,9 @@ void setup() {
   Plaatsen = generatePlaatsen();
 }
 
-int kaartTellerDezeBeurt = 0;
-boolean langsteDezeBeurt = false;
-boolean geefVolgendeWeer = false;
+int kaartTellerDezeBeurt;
+boolean langsteDezeBeurt;
+boolean geefVolgendeWeer;
 
 void runGameLogic(Row rij, boolean links, boolean hoger)
 {
@@ -74,26 +33,29 @@ void runGameLogic(Row rij, boolean links, boolean hoger)
   langsteDezeBeurt = langsteDezeBeurt || isLangsteRij(rij);
   if (kaartTellerDezeBeurt >= MIN_KAARTEN_PER_BEURT && langsteDezeBeurt) geefVolgendeWeer = true;
 
+  if (Deck.isEmpty()) Deck = createDeck();
   Kaart k = Deck.pop();
   if (!rij.addKaart(k, links, hoger))
   {
     println("drink " + rij.getSize() + " keer");
     ArrayList<Kaart> eruit = rij.bijFout(k);
     Deck.addAll(eruit);
-    kaartTellerDezeBeurt = 0;
-    langsteDezeBeurt = false;
-    geefVolgendeWeer = false;
+    if (RESET_BIJ_FOUT) {
+      resetTellers();
+    }
   }
 }
 
-/**
- * Wordt nog niet gebruikt
- */
 void volgendeSpeler()
 {
   println("De volgende speler is aan de beurt");
+  resetTellers();
+}
+
+void resetTellers()
+{
   kaartTellerDezeBeurt = 0;
-  langsteDezeBeurt = false;
+  langsteDezeBeurt = !VEREIS_LANGSTE_RIJ;
   geefVolgendeWeer = false;
 }
 

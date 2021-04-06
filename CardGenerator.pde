@@ -82,18 +82,22 @@ ArrayDeque<Kaart> createDeck()
   
   ArrayList<Kaart> kaarten = new ArrayList<Kaart>(suits.length * ranks.length);
   
-  for (Suit suit : suits)
+  for (int i = 0; i < PAKJES_KAARTEN; i++)
   {
-    int waarde = 2;
-    for (String rank : ranks)
+    for (Suit suit : suits)
     {
-      PImage image = loadImage(getLocation(suit, rank));
-      kaarten.add(new Kaart(image, waarde));
-      waarde++;
+      int waarde = 2;
+      for (String rank : ranks)
+      {
+        PImage image = loadImage(getLocation(suit, rank));
+        kaarten.add(new Kaart(image, waarde));
+        waarde++;
+      }
     }
   }
   
   schud(kaarten);
+  println("Er zitten " + kaarten.size() + " kaarten in de stapel");
   
   return new ArrayDeque<Kaart>(kaarten);
 }

@@ -9,3 +9,5 @@ application.macosx
 data/cards/
 
 data/settings/game.properties
+
+*.autosave
