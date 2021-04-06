@@ -66,7 +66,7 @@ class knop implements Hitbox
     y1 = yPos;
     x2 = (xPos + knopBreedte);
     y2 = (yPos + knopHoogte);
-    fill(100, 100, 100);
+    fill(100, 255, 100);
     rect(xPos, yPos, knopBreedte, knopHoogte);
   }
   

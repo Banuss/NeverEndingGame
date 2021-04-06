@@ -11,7 +11,7 @@ void loadSettings()
   //defaults
   int RIJEN = 5;
   int MIN_KAARTEN_PER_BEURT = 3;
-  
+
   String gameSettingsLocation = dataPath("settings" + File.separator + GAME_SETTINGS);
   String[] settings = loadStrings(gameSettingsLocation);
   if (settings != null)
@@ -23,24 +23,23 @@ void loadSettings()
       {
         switch (setting.substring(0, separatorPos))
         {
-          case "RIJEN":
-            RIJEN = Integer.parseInt(setting.substring(separatorPos+1));
-            break;
-          case "MIN_KAARTEN_PER_BEURT":
-            MIN_KAARTEN_PER_BEURT = Integer.parseInt(setting.substring(separatorPos+1));
-            break;
-          default:
-            println("Unknown setting: \"" + setting + "\"");
-            break;
+        case "RIJEN":
+          RIJEN = Integer.parseInt(setting.substring(separatorPos+1));
+          break;
+        case "MIN_KAARTEN_PER_BEURT":
+          MIN_KAARTEN_PER_BEURT = Integer.parseInt(setting.substring(separatorPos+1));
+          break;
+        default:
+          println("Unknown setting: \"" + setting + "\"");
+          break;
         }
       }
     }
-  }
-  else
+  } else
   {
-    saveStrings(gameSettingsLocation, new String[] {"RIJEN="+RIJEN,"MIN_KAARTEN_PER_BEURT="+MIN_KAARTEN_PER_BEURT});
+    saveStrings(gameSettingsLocation, new String[] {"RIJEN="+RIJEN, "MIN_KAARTEN_PER_BEURT="+MIN_KAARTEN_PER_BEURT});
   }
-  
+
   this.RIJEN = RIJEN;
   this.MIN_KAARTEN_PER_BEURT = MIN_KAARTEN_PER_BEURT;
 }
@@ -67,12 +66,13 @@ void setup() {
 
 int kaartTellerDezeBeurt = 0;
 boolean langsteDezeBeurt = false;
+boolean geefVolgendeWeer = false;
 
 void runGameLogic(Row rij, boolean links, boolean hoger)
 {
   kaartTellerDezeBeurt++;
   langsteDezeBeurt = langsteDezeBeurt || isLangsteRij(rij);
-  if (kaartTellerDezeBeurt >= MIN_KAARTEN_PER_BEURT && langsteDezeBeurt) laatVolgendeSpelerKnopZien();
+  if (kaartTellerDezeBeurt >= MIN_KAARTEN_PER_BEURT && langsteDezeBeurt) geefVolgendeWeer = true;
 
   Kaart k = Deck.pop();
   if (!rij.addKaart(k, links, hoger))
@@ -80,6 +80,9 @@ void runGameLogic(Row rij, boolean links, boolean hoger)
     println("drink " + rij.getSize() + " keer");
     ArrayList<Kaart> eruit = rij.bijFout(k);
     Deck.addAll(eruit);
+    kaartTellerDezeBeurt = 0;
+    langsteDezeBeurt = false;
+    geefVolgendeWeer = false;
   }
 }
 
@@ -91,14 +94,7 @@ void volgendeSpeler()
   println("De volgende speler is aan de beurt");
   kaartTellerDezeBeurt = 0;
   langsteDezeBeurt = false;
-}
-
-void laatVolgendeSpelerKnopZien()
-{
-  println("TODO: Laat een knop zien om de volgende speler een beurt te geven.");
-
-  // Tijdelijk voor testen
-  volgendeSpeler();
+  geefVolgendeWeer = false;
 }
 
 boolean isLangsteRij(Row teVergelijken)
@@ -150,6 +146,7 @@ void draw() {
   int uiHeight = (height-(3*SPACE))/2;
   int uiWidth = uiHeight/4;
 
+
   //Links
   knophogerlager lagerl = new knophogerlager(false);
   lagerl.tekenen(xPos, yPos, uiWidth, uiHeight);
@@ -160,8 +157,16 @@ void draw() {
   hitboxes.add(hogerl);
   yPos = SPACE;
 
+  if (geefVolgendeWeer)
+  {
+    xPos += uiWidth + SPACE;
+    knop kvolgende = new knop("volgende", "Volgende");
+    kvolgende.tekenen(xPos, yPos, uiWidth, uiWidth);
+    hitboxes.add(kvolgende);
+  }
+
+
   xPos = width - uiWidth - SPACE;
-  yPos = SPACE;
 
   //Rechts
   knophogerlager hogerr = new knophogerlager(true);
