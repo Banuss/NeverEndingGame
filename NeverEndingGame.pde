@@ -31,7 +31,7 @@ void runGameLogic(Row rij, boolean links, boolean hoger)
   kaartTellerDezeBeurt++;
   langsteDezeBeurt = langsteDezeBeurt || isLangsteRij(rij);
   if (kaartTellerDezeBeurt >= MIN_KAARTEN_PER_BEURT && langsteDezeBeurt) laatVolgendeSpelerKnopZien();
-  
+
   Kaart k = Deck.pop();
   if (!rij.addKaart(k, links, hoger))
   {
@@ -54,7 +54,7 @@ void volgendeSpeler()
 void laatVolgendeSpelerKnopZien()
 {
   println("TODO: Laat een knop zien om de volgende speler een beurt te geven.");
-  
+
   // Tijdelijk voor testen
   volgendeSpeler();
 }
@@ -82,11 +82,11 @@ Row[] generateSpeelveld()
 Plaats[] generatePlaatsen()
 {
   Plaats[] result = new Plaats[RIJEN*2];
-  for (int i = 0; i < RIJEN ; i++)
+  for (int i = 0; i < RIJEN; i++)
   {
     result[i] = new Plaats(i, true);
   }
-  for (int i = 0; i < RIJEN ; i++)
+  for (int i = 0; i < RIJEN; i++)
   {
     result[i+RIJEN] = new Plaats(i, false);
   }
@@ -139,11 +139,11 @@ void draw() {
     row.getMidden().tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
 
     xPos -=(row.getLinks().size() + 1) * (kaartBreedte + SPACE); 
-    
+
     //Teken Plaats Links
     Plaatsen[rowNum].tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
     hitboxes.add(Plaatsen[rowNum]);
-    
+
     xPos = (width/2)-(kaartBreedte/2)-kaartBreedte - SPACE - SPACE;
 
     //Teken Kaarten Links
@@ -189,8 +189,16 @@ void mouseClicked() {
         }
       }
     }
+    if (hb.Match()&& hb instanceof knop)
+    {
+      if (((knop) hb).getNaam().equals("volgende"));
+      {
+        volgendeSpeler();
+      }
+    }
   }
 }
+
 
 
 public void schud(ArrayList<Kaart> pak)

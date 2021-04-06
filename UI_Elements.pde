@@ -20,7 +20,7 @@ class knophogerlager implements Hitbox
   {
     return (mouseX>=x1 && mouseX<=x2 && mouseY>=y1 && mouseY<=y2);
   }
-
+  
   void tekenen(int xPos, int yPos, int plaatsBreedte, int plaatsHoogte)
   {
     x1 = xPos;
@@ -39,17 +39,25 @@ class knophogerlager implements Hitbox
   }
 }
 
+
 class knop implements Hitbox
 {
   String name;
+  String text;
   int x1;
   int y1;
   int x2;
   int y2;
   
-  knop(String name)
+  knop(String name, String text)
   {
     this.name = name;
+    this.text = text;
+  }
+  
+  String getNaam() //getName mag ook al niet
+  {
+    return name;
   }
   
   void tekenen(int xPos, int yPos, int knopBreedte, int knopHoogte)
