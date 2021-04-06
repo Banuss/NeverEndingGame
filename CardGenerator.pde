@@ -11,13 +11,13 @@ enum Suit {
   
   final String image;
   final String id;
-  final int color;
+  final int kleur;
   
-  private Suit(String image, String id, int color)
+  private Suit(String image, String id, int kleur)
   {
     this.image = image;
     this.id = id;
-    this.color = color;
+    this.kleur = kleur;
   }
 }
 
@@ -44,7 +44,7 @@ void generateCardfaces() {
     for (String rank : ranks) {
       String fname = getLocation(suit, rank);
       PG_card.beginDraw();
-      PG_card.fill(suit.color);
+      PG_card.fill(suit.kleur);
       PG_card.background(255);
       PG_card.text(rank, center_x, center_y/2);
       PG_card.image(card_image, center_x, 1.5*center_y);
