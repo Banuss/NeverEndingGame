@@ -103,9 +103,9 @@ void draw() {
   int xPos = SPACE, yPos = SPACE;
   if (geefStrafWeer && straf!=null)
   {
-    xPos = SPACE;
-    yPos = SPACE;
-    straf.tekenen(xPos, yPos, (width-SPACE-SPACE), (height-SPACE-SPACE));
+    xPos = 100;
+    yPos = 100;
+    straf.tekenen(xPos, yPos, (width-200), (height-200));
     hitboxes.add(straf);
   } else
   {
