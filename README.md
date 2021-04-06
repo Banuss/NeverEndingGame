@@ -11,4 +11,6 @@
 - Straf pop-up
 - volgende speler knop
   - ~~alleen na 3 beurten waarvan 1 bij de hoogste rij was~~
+- FIX loadSettings() --> It looks like you're mixing "active" and "static" modes. Return type for the method is missing
+
 
