@@ -5,12 +5,12 @@ class knophogerlager implements Hitbox
   int y1;
   int x2;
   int y2;
-  
+
   knophogerlager(boolean hoger)
   {
     this.hoger = hoger;
   }
-  
+
   boolean getHoger()
   {
     return hoger;
@@ -20,7 +20,7 @@ class knophogerlager implements Hitbox
   {
     return (mouseX>=x1 && mouseX<=x2 && mouseY>=y1 && mouseY<=y2);
   }
-  
+
   void tekenen(int xPos, int yPos, int plaatsBreedte, int plaatsHoogte)
   {
     x1 = xPos;
@@ -30,8 +30,7 @@ class knophogerlager implements Hitbox
     if (hoger)
     {
       fill(0, 200, 0);
-    }
-    else
+    } else
     {
       fill(200, 0, 0);
     }
@@ -48,18 +47,18 @@ class knop implements Hitbox
   int y1;
   int x2;
   int y2;
-  
+
   knop(String name, String text)
   {
     this.name = name;
     this.text = text;
   }
-  
+
   String getNaam() //getName mag ook al niet
   {
     return name;
   }
-  
+
   void tekenen(int xPos, int yPos, int knopBreedte, int knopHoogte)
   {
     x1 = xPos;
@@ -69,7 +68,38 @@ class knop implements Hitbox
     fill(100, 255, 100);
     rect(xPos, yPos, knopBreedte, knopHoogte);
   }
-  
+
+  boolean Match()
+  {
+    return (mouseX>=x1 && mouseX<=x2 && mouseY>=y1 && mouseY<=y2);
+  }
+}
+
+class strafvenster implements Hitbox
+{
+  int sips;
+  int x1;
+  int y1;
+  int x2;
+  int y2;
+
+  strafvenster(int sips)
+  {
+    this.sips = sips;
+  }
+
+  void tekenen(int xPos, int yPos, int breedte, int hoogte)
+  {
+    x1 = xPos;
+    y1 = yPos;
+    x2 = (xPos + breedte);
+    y2 = (yPos + hoogte);
+    fill(255, 200, 0, 200);
+    rect(xPos, yPos, breedte, hoogte);
+    fill(0, 0, 0);
+    text(sips + "Slok(ken)", 100, 100, 300, 200);
+  }
+
   boolean Match()
   {
     return (mouseX>=x1 && mouseX<=x2 && mouseY>=y1 && mouseY<=y2);

@@ -26,6 +26,8 @@ void setup() {
 int kaartTellerDezeBeurt;
 boolean langsteDezeBeurt;
 boolean geefVolgendeWeer;
+boolean geefStrafWeer;
+strafvenster straf;
 
 void runGameLogic(Row rij, boolean links, boolean hoger)
 {
@@ -38,6 +40,8 @@ void runGameLogic(Row rij, boolean links, boolean hoger)
   if (!rij.addKaart(k, links, hoger))
   {
     println("drink " + rij.getSize() + " keer");
+    geefStrafWeer = true;
+    straf = new strafvenster(rij.getSize());
     ArrayList<Kaart> eruit = rij.bijFout(k);
     Deck.addAll(eruit);
     if (RESET_BIJ_FOUT) {
@@ -96,91 +100,105 @@ Plaats[] generatePlaatsen()
 
 void draw() { 
   clear();
-  //Hoogte Kaart met 5 pixels tussenruimte
-  hitboxes.clear();
-  int kaartHoogte = ((height-(SPACE*(RIJEN+1)))/RIJEN);
-  int kaartBreedte = (kaartHoogte*2)/3;
   int xPos = SPACE, yPos = SPACE;
-  int rowNum = 0;
-
-  //Reserveer Links en Rechts Ruimte voor UI elements
-
-  int uiHeight = (height-(3*SPACE))/2;
-  int uiWidth = uiHeight/4;
-
-
-  //Links
-  knophogerlager lagerl = new knophogerlager(false);
-  lagerl.tekenen(xPos, yPos, uiWidth, uiHeight);
-  hitboxes.add(lagerl);
-  yPos += uiHeight + SPACE;
-  knophogerlager hogerl = new knophogerlager(true);
-  hogerl.tekenen(xPos, yPos, uiWidth, uiHeight);
-  hitboxes.add(hogerl);
-  yPos = SPACE;
-
-  if (geefVolgendeWeer)
+  if (geefStrafWeer && straf!=null)
   {
-    xPos += uiWidth + SPACE;
-    knop kvolgende = new knop("volgende", "Volgende");
-    kvolgende.tekenen(xPos, yPos, uiWidth, uiWidth);
-    hitboxes.add(kvolgende);
-  }
+    xPos = SPACE;
+    yPos = SPACE;
+    straf.tekenen(xPos, yPos, (width-SPACE-SPACE), (height-SPACE-SPACE));
+    hitboxes.add(straf);
+  } else
+  {
+    //Hoogte Kaart met 5 pixels tussenruimte
+    hitboxes.clear();
+    int kaartHoogte = ((height-(SPACE*(RIJEN+1)))/RIJEN);
+    int kaartBreedte = (kaartHoogte*2)/3;
+    int rowNum = 0;
 
+    //Reserveer Links en Rechts Ruimte voor UI elements
+    int uiHeight = (height-(3*SPACE))/2;
+    int uiWidth = uiHeight/4;
 
-  xPos = width - uiWidth - SPACE;
+    //Links
+    knophogerlager lagerl = new knophogerlager(false);
+    lagerl.tekenen(xPos, yPos, uiWidth, uiHeight);
+    hitboxes.add(lagerl);
+    yPos += uiHeight + SPACE;
+    knophogerlager hogerl = new knophogerlager(true);
+    hogerl.tekenen(xPos, yPos, uiWidth, uiHeight);
+    hitboxes.add(hogerl);
+    yPos = SPACE;
 
-  //Rechts
-  knophogerlager hogerr = new knophogerlager(true);
-  hogerr.tekenen(xPos, yPos, uiWidth, uiHeight);
-  hitboxes.add(hogerr);
-  yPos += uiHeight + SPACE;
-  knophogerlager lagerr= new knophogerlager(false);
-  lagerr.tekenen(xPos, yPos, uiWidth, uiHeight);
-  hitboxes.add(lagerr);
-  yPos = SPACE;
-
-  for (Row row : Speelveld) 
-  { 
-
-    //Teken Middelste Kaart
-    xPos = (width/2)-(kaartBreedte/2)-SPACE;
-    row.getMidden().tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
-
-    xPos -=(row.getLinks().size() + 1) * (kaartBreedte + SPACE); 
-
-    //Teken Plaats Links
-    Plaatsen[rowNum].tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
-    hitboxes.add(Plaatsen[rowNum]);
-
-    xPos = (width/2)-(kaartBreedte/2)-kaartBreedte - SPACE - SPACE;
-
-    //Teken Kaarten Links
-    for (Kaart l : row.getLinks())
+    if (geefVolgendeWeer)
     {
-      l.tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
-      xPos -= kaartBreedte + SPACE;
+      xPos += uiWidth + SPACE;
+      knop kvolgende = new knop("volgende", "Volgende");
+      kvolgende.tekenen(xPos, yPos, uiWidth, uiWidth);
+      hitboxes.add(kvolgende);
     }
 
-    //Teken Kaarten Rechts
-    xPos = (width/2)+(kaartBreedte/2);
-    for (Kaart r : row.getRechts())
-    {
-      r.tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
+
+    xPos = width - uiWidth - SPACE;
+
+    //Rechts
+    knophogerlager hogerr = new knophogerlager(true);
+    hogerr.tekenen(xPos, yPos, uiWidth, uiHeight);
+    hitboxes.add(hogerr);
+    yPos += uiHeight + SPACE;
+    knophogerlager lagerr= new knophogerlager(false);
+    lagerr.tekenen(xPos, yPos, uiWidth, uiHeight);
+    hitboxes.add(lagerr);
+    yPos = SPACE;
+
+    for (Row row : Speelveld) 
+    { 
+
+      //Teken Middelste Kaart
+      xPos = (width/2)-(kaartBreedte/2)-SPACE;
+      row.getMidden().tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
+
+      xPos -=(row.getLinks().size() + 1) * (kaartBreedte + SPACE); 
+
+      //Teken Plaats Links
+      Plaatsen[rowNum].tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
+      hitboxes.add(Plaatsen[rowNum]);
+
+      xPos = (width/2)-(kaartBreedte/2)-kaartBreedte - SPACE - SPACE;
+
+      //Teken Kaarten Links
+      for (Kaart l : row.getLinks())
+      {
+        l.tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
+        xPos -= kaartBreedte + SPACE;
+      }
+
+      //Teken Kaarten Rechts
+      xPos = (width/2)+(kaartBreedte/2);
+      for (Kaart r : row.getRechts())
+      {
+        r.tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
+        xPos += kaartBreedte + SPACE;
+      }
+
+      //Teken Plaats Rechts
+      Plaatsen[rowNum+RIJEN].tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
+      hitboxes.add(Plaatsen[rowNum+RIJEN]);
       xPos += kaartBreedte + SPACE;
+
+      //Volgende Rij
+      yPos += (kaartHoogte + SPACE);
+      rowNum++;
+
+
+      //OverLay Straf
+      if (geefStrafWeer && straf!=null)
+      {
+        xPos = SPACE;
+        yPos = SPACE;
+        straf.tekenen(xPos, yPos, (width-SPACE-SPACE), (height-SPACE-SPACE));
+        hitboxes.add(straf);
+      }
     }
-
-    //Teken Plaats Rechts
-    Plaatsen[rowNum+RIJEN].tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
-    hitboxes.add(Plaatsen[rowNum+RIJEN]);
-    xPos += kaartBreedte + SPACE;
-
-    //Volgende Rij
-    yPos += (kaartHoogte + SPACE);
-    rowNum++;
-
-
-    //Temporair UI
   }
 }
 
@@ -188,21 +206,26 @@ void mouseClicked() {
   println("Geklikt op: "+mouseX + ":" + mouseY);
   for (Hitbox hb : hitboxes)
   {
-    if (hb.Match()&& hb instanceof knophogerlager)
+    if (hb.Match()&& hb instanceof strafvenster)
+    {
+      geefStrafWeer = false;
+      return;
+    } else if (hb.Match()&& hb instanceof knophogerlager)
     {
       for (Plaats p : Plaatsen)
       {
         if (p.getSelect())
         {
           runGameLogic(Speelveld[p.getRij()], p.getLinks(), ((knophogerlager) hb).getHoger());
+          return;
         }
       }
-    }
-    if (hb.Match()&& hb instanceof knop)
+    } else if (hb.Match()&& hb instanceof knop)
     {
       if (((knop) hb).getNaam().equals("volgende"));
       {
         volgendeSpeler();
+        return;
       }
     }
   }
