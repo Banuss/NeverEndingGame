@@ -1,6 +1,7 @@
 import java.util.ArrayDeque;
 
 final int RIJEN = 5;
+final int MIN_KAARTEN_PER_BEURT = 3;
 final int SPACE = 8;
 
 ArrayDeque<Kaart> Deck;
@@ -29,8 +30,7 @@ void runGameLogic(Row rij, boolean links, boolean hoger)
 {
   kaartTellerDezeBeurt++;
   langsteDezeBeurt = langsteDezeBeurt || isLangsteRij(rij);
-  // TODO: reset bij volgende speler
-  println("Dit is kaart #" + kaartTellerDezeBeurt + ". Er is " + (langsteDezeBeurt ? "" : "nog niet ") + "aan de langste rij gelegt");
+  if (kaartTellerDezeBeurt >= MIN_KAARTEN_PER_BEURT && langsteDezeBeurt) laatVolgendeSpelerKnopZien();
   
   Kaart k = Deck.pop();
   if (!rij.addKaart(k, links, hoger))
@@ -39,6 +39,24 @@ void runGameLogic(Row rij, boolean links, boolean hoger)
     ArrayList<Kaart> eruit = rij.bijFout(k);
     Deck.addAll(eruit);
   }
+}
+
+/**
+ * Wordt nog niet gebruikt
+ */
+void volgendeSpeler()
+{
+  println("De volgende speler is aan de beurt");
+  kaartTellerDezeBeurt = 0;
+  langsteDezeBeurt = false;
+}
+
+void laatVolgendeSpelerKnopZien()
+{
+  println("TODO: Laat een knop zien om de volgende speler een beurt te geven.");
+  
+  // Tijdelijk voor testen
+  volgendeSpeler();
 }
 
 boolean isLangsteRij(Row teVergelijken)
