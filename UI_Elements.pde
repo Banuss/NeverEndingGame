@@ -97,7 +97,9 @@ class strafvenster implements Hitbox
     fill(255, 200, 0, 200);
     rect(xPos, yPos, breedte, hoogte);
     fill(0, 0, 0);
-    text(sips + "Slok(ken)", 100, 100, 300, 200);
+    textSize(50);
+    textAlign(CENTER, CENTER);
+    text(sips + " slok" + (sips != 1 ? "ken" : ""), 100, 100, 300, 200);
   }
 
   boolean Match()
