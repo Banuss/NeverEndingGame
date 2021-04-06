@@ -6,7 +6,7 @@ int MIN_KAARTEN_PER_BEURT;
 public static final String GAME_SETTINGS = "game.properties";
 final int SPACE = 8;
 
-loadSettings()
+void loadSettings()
 {
   //defaults
   int RIJEN = 5;
@@ -51,6 +51,7 @@ Plaats[] Plaatsen;
 ArrayList<Hitbox> hitboxes = new ArrayList<Hitbox>();
 
 void setup() {
+  loadSettings();
   size(1024, 640);
   surface.setTitle("Never Ending Game...");
   surface.setLocation(100, 100);
