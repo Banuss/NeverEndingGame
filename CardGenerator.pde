@@ -51,13 +51,17 @@ void generateCardfaces() {
 
       //Rechtop
       PG_card.text(rank, 480, 660);
+      PG_card.tint(255, 100);
       PG_card.image(card_image, 50, 890-380, 350, 350);
+      PG_card.tint(255, 255);
        //Op de Kop
       PG_card.pushMatrix();
       PG_card.rotate(PI);
       
       PG_card.text(rank,-(640-480), -(890-660));
+      PG_card.tint(255, 100);
       PG_card.image(card_image, -590, -380, 350, 350);
+      PG_card.tint(255, 255);
       PG_card.popMatrix();
 
       PG_card.endDraw();

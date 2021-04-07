@@ -109,15 +109,17 @@ void draw() {
     hitboxes.add(straf);
   } else
   {
-    //Hoogte Kaart met 5 pixels tussenruimte
     hitboxes.clear();
     int kaartHoogte = ((height-(SPACE*(RIJEN+1)))/RIJEN);
     int kaartBreedte = (kaartHoogte*2)/3;
     int rowNum = 0;
 
+
     //Reserveer Links en Rechts Ruimte voor UI elements
     int uiHeight = (height-(3*SPACE))/2;
     int uiWidth = uiHeight/4;
+
+    int maxRijBreedte = (width/2) - SPACE - uiWidth - SPACE - kaartBreedte - SPACE - SPACE - SPACE - (kaartBreedte/2);
 
     //Links
     knophogerlager lagerl = new knophogerlager(false);
@@ -157,27 +159,45 @@ void draw() {
       xPos = (width/2)-(kaartBreedte/2)-SPACE;
       row.getMidden().tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
 
-      xPos -=(row.getLinks().size() + 1) * (kaartBreedte + SPACE); 
-
-      //Teken Plaats Links
-      Plaatsen[rowNum].tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
-      hitboxes.add(Plaatsen[rowNum]);
-
       xPos = (width/2)-(kaartBreedte/2)-kaartBreedte - SPACE - SPACE;
 
       //Teken Kaarten Links
       for (Kaart l : row.getLinks())
       {
         l.tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
-        xPos -= kaartBreedte + SPACE;
+        if ((row.getLinks().size() * kaartBreedte+SPACE)> maxRijBreedte)
+        {
+          xPos -= kaartBreedte/3;
+        } else
+        {
+          xPos -= kaartBreedte + SPACE;
+        }
       }
+      if ((row.getLinks().size() * kaartBreedte+SPACE)> maxRijBreedte)
+      {
+        xPos -= (kaartBreedte/3 + kaartBreedte/3 + SPACE);
+      }
+
+      //Teken Plaats Links
+      Plaatsen[rowNum].tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
+      hitboxes.add(Plaatsen[rowNum]);
 
       //Teken Kaarten Rechts
       xPos = (width/2)+(kaartBreedte/2);
       for (Kaart r : row.getRechts())
       {
         r.tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
-        xPos += kaartBreedte + SPACE;
+        if ((row.getRechts().size() * kaartBreedte+SPACE)> maxRijBreedte)
+        {
+          xPos += kaartBreedte/3;
+        } else
+        {
+          xPos += kaartBreedte + SPACE;
+        }
+      }
+      if ((row.getRechts().size() * kaartBreedte+SPACE)> maxRijBreedte)
+      {
+        xPos += (kaartBreedte/3 + kaartBreedte/3 + SPACE);
       }
 
       //Teken Plaats Rechts
@@ -212,8 +232,7 @@ void mousePressed() {
       {
         geefStrafWeer = false;
         return;
-      }
-      else if (hb instanceof knophogerlager)
+      } else if (hb instanceof knophogerlager)
       {
         for (Plaats p : Plaatsen)
         {
@@ -223,8 +242,7 @@ void mousePressed() {
             return;
           }
         }
-      }
-      else if (hb instanceof knop)
+      } else if (hb instanceof knop)
       {
         if (((knop) hb).getNaam().equals("volgende"));
         {
