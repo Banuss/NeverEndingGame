@@ -29,7 +29,7 @@ void generateCardfaces() {
   PGraphics PG_card = createGraphics(640, 890);
   String[] ranks = getRanks();
   Suit[] suits = Suit.values();
-
+  PImage background = loadImage("settings/bg.png");
   PG_card.beginDraw();
   PG_card.imageMode(CENTER);
   PG_card.textAlign(CENTER, CENTER);
@@ -43,9 +43,10 @@ void generateCardfaces() {
     PImage card_image = loadImage(suit.image); //<>//
     for (String rank : ranks) {
       String fname = getLocation(suit, rank);
+      PG_card.clear();
       PG_card.beginDraw();
       PG_card.fill(suit.kleur);
-      PG_card.background(255);
+      PG_card.image(background, 640/2,890/2);
       PG_card.text(rank, center_x, center_y/2);
       PG_card.image(card_image, center_x, 1.5*center_y);
       PG_card.endDraw();
