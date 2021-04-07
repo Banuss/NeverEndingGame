@@ -1,18 +1,18 @@
-private String[] getRanks() 
+private String[] getRanks()  //<>// //<>// //<>//
 {
-  return new String[] {"2","3","4","5","6","7","8","9","10","J","Q","H","A"};
+  return new String[] {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "H", "A"};
 }
 
 enum Suit {
-  schoppen("settings/0.png", "S", 0),
-  klaver("settings/1.png", "K", 0),
-  ruiten("settings/2.png", "R", #FF0000),
-  harten("settings/3.png", "H", #FF0000);
-  
+  schoppen("settings/0.png", "S", 0), 
+    klaver("settings/1.png", "K", 0), 
+    ruiten("settings/2.png", "R", #FF0000), 
+    harten("settings/3.png", "H", #FF0000);
+
   final String image;
   final String id;
   final int kleur;
-  
+
   private Suit(String image, String id, int kleur)
   {
     this.image = image;
@@ -25,30 +25,41 @@ private static final String cardsLocation = "cards" + File.separator;
 private static final String cardFilenameFormat = "%s_%s.png";
 
 void generateCardfaces() {
-  print("Generating cards..."); //<>//
+  print("Generating cards...");
   PGraphics PG_card = createGraphics(640, 890);
   String[] ranks = getRanks();
   Suit[] suits = Suit.values();
   PImage background = loadImage("settings/bg.png");
   PG_card.beginDraw();
-  PG_card.imageMode(CENTER);
+  PG_card.imageMode(CORNER);
+  PG_card.textFont(createFont("fonts/keed.ttf", 300));
   PG_card.textAlign(CENTER, CENTER);
-  PG_card.textSize(300);
-  PG_card.fill(0);
   PG_card.endDraw();
-  int center_x = int( PG_card.width / 2 );
-  int center_y = int( PG_card.height / 2 );
 
   for (Suit suit : suits) {
-    PImage card_image = loadImage(suit.image); //<>//
+    PImage card_image = loadImage(suit.image);
     for (String rank : ranks) {
       String fname = getLocation(suit, rank);
       PG_card.clear();
       PG_card.beginDraw();
+
+      //Teken Background
+      PG_card.image(background,0,0,640,890);
+      
+      //Laad Text
       PG_card.fill(suit.kleur);
-      PG_card.image(background, 640/2,890/2);
-      PG_card.text(rank, center_x, center_y/2);
-      PG_card.image(card_image, center_x, 1.5*center_y);
+
+      //Rechtop
+      PG_card.text(rank, 480, 660);
+      PG_card.image(card_image, 50, 890-380, 350, 350);
+       //Op de Kop
+      PG_card.pushMatrix();
+      PG_card.rotate(PI);
+      
+      PG_card.text(rank,-(640-480), -(890-660));
+      PG_card.image(card_image, -590, -380, 350, 350);
+      PG_card.popMatrix();
+
       PG_card.endDraw();
       PG_card.save(fname);
     }
@@ -62,7 +73,7 @@ void generateCardfaces() {
  */
 boolean cardfacesAreIntegrous()
 {
-  Suit[] suits = Suit.values(); //<>//
+  Suit[] suits = Suit.values();
   String[] ranks = getRanks();
   for (Suit suit : suits)
   {
@@ -80,9 +91,9 @@ ArrayDeque<Kaart> createDeck()
 {
   Suit[] suits = Suit.values();
   String[] ranks = getRanks();
-  
+
   ArrayList<Kaart> kaarten = new ArrayList<Kaart>(suits.length * ranks.length);
-  
+
   for (int i = 0; i < PAKJES_KAARTEN; i++)
   {
     for (Suit suit : suits)
@@ -96,10 +107,10 @@ ArrayDeque<Kaart> createDeck()
       }
     }
   }
-  
+
   schud(kaarten);
   println("Er zitten " + kaarten.size() + " kaarten in de stapel");
-  
+
   return new ArrayDeque<Kaart>(kaarten);
 }
 
