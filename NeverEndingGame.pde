@@ -39,9 +39,9 @@ void runGameLogic(Row rij, boolean links, boolean hoger)
   Kaart k = Deck.pop();
   if (!rij.addKaart(k, links, hoger))
   {
-    println("drink " + rij.getSize() + " keer");
+    println("drink " + rij.getStraf() + " keer");
     geefStrafWeer = true;
-    straf = new strafvenster(rij.getSize() + (TEL_FOUT_MEE ? 1 : 0));
+    straf = new strafvenster(rij.getStraf());
     ArrayList<Kaart> eruit = rij.bijFout(k);
     Deck.addAll(eruit);
     if (RESET_BIJ_FOUT) {
@@ -223,7 +223,7 @@ void draw() {
 }
 
 void mousePressed() {
-  println("Geklikt op: "+mouseX + ":" + mouseY);
+  //println("Geklikt op: "+mouseX + ":" + mouseY);
   for (Hitbox hb : hitboxes)
   {
     if (hb.Match())

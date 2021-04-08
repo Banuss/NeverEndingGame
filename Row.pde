@@ -11,6 +11,11 @@ class Row
     this.midden = midden;
   }
 
+  public int getStraf()
+  {
+    return getSize()  + (TEL_FOUT_MEE ? 1 : 0);
+  }
+
   public int getSize()
   {
     return 1 + links.size() + rechts.size();

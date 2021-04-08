@@ -45,7 +45,7 @@ class Plaats implements Hitbox
   
   void tekenen(int xPos, int yPos, int plaatsBreedte, int plaatsHoogte)
   {
-      x1 = xPos; //<>//
+      x1 = xPos;
       y1 = yPos;
       x2 = (xPos + plaatsBreedte);
       y2 = (yPos + plaatsHoogte);
