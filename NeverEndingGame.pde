@@ -7,13 +7,15 @@ ArrayDeque<Kaart> Deck;
 Row[] Speelveld;
 HashSet<Hitbox> hitboxes = new HashSet<Hitbox>();
 Plaats geselecteerd = null;
+PFont uiFont;
 
 void setup() {
   fullScreen(P2D);
   background(0);
 
   surface.setTitle("Never Ending Game...");
-
+  uiFont = createFont("fonts/keed.ttf", 72);
+  
   loadSettings();
   stelDimensiesIn();
 
@@ -126,13 +128,9 @@ void draw() {
   {
     xPos = 100;
     yPos = 100;
-    straf.tekenen(xPos, yPos, (width-200), (height-200));
-    hitboxes.add(straf);
+    straf.tekenen();
   } else
   {
-    // Re-assign hitboxes
-    hitboxes.clear();
-
     //Links
     knophogerlager lagerl = new knophogerlager(false);
     lagerl.tekenen(xPos, yPos, uiWidth, uiHeight);

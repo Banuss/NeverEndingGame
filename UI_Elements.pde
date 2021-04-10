@@ -4,7 +4,7 @@ abstract class Hitbox
   protected int y1;
   protected int x2;
   protected int y2;
-  
+
   Hitbox()
   {
     hitboxes.add(this);
@@ -16,7 +16,7 @@ abstract class Hitbox
   }
 
   abstract void onClick();
-  
+
   void destroy()
   {
     hitboxes.remove(this);
@@ -69,7 +69,7 @@ class volgendeKnop extends Hitbox
     fill(100, 255, 100);
     rect(xPos, yPos, knopBreedte, knopHoogte);
   }
-  
+
   public void onClick()
   {
     volgendeSpeler();
@@ -79,27 +79,40 @@ class volgendeKnop extends Hitbox
 class strafvenster extends Hitbox
 {
   int sips;
+  PGraphics pg;
+  PVector loc, dim;
 
   strafvenster(int sips)
   {
+    pg = createGraphics(width, height);
+    pg.beginDraw();
+    pg.textFont(uiFont);
+    pg.textAlign(CENTER, CENTER);
+    pg.endDraw();
+    
+    dim = new PVector(pg.width * 0.8, pg.height * 0.8);
+    loc = new PVector(pg.width/2, pg.height/2);
+    
+    x1 = int(loc.x - dim.x/2);
+    x2 = int(loc.x + dim.x/2);
+    y1 = int(loc.y - dim.y/2);
+    y2 = int(loc.y + dim.y/2);
+    
     this.sips = sips;
   }
 
-  void tekenen(int xPos, int yPos, int breedte, int hoogte)
+  void tekenen()
   {
-    x1 = xPos;
-    y1 = yPos;
-    x2 = (xPos + breedte);
-    y2 = (yPos + hoogte);
-    fill(255, 200, 0, 200);
-    rect(xPos, yPos, breedte, hoogte);
-    fill(0, 0, 0);
-    textFont(createFont("fonts/keed.ttf", 72));
-    textAlign(CENTER, CENTER);
-    text(sips + " SLOK" + (sips != 1 ? "KEN" : ""), (breedte/2), (hoogte/2));
+    pg.beginDraw();
+    pg.fill(255, 200, 0, 200);
+    pg.rect(loc.x, loc.y, dim.x, dim.y);
+    pg.fill(0, 0, 0);
+    pg.text(sips + " SLOK" + (sips != 1 ? "KEN" : ""), (dim.x/2), (dim.y/2));
+    pg.endDraw();
   }
 
   public void onClick() {
-    assert false : "Wordt elders geregeld";
+  assert false : 
+    "Wordt elders geregeld";
   }
 }

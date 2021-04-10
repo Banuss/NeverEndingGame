@@ -4,15 +4,16 @@ class Row
   ArrayList<Kaart> rechts;
   Kaart midden;
   PGraphics pg;
+  PVector pos;
   Plaats optieLinks;
   Plaats optieRechts;
-  PVector pos;
 
   Row(Kaart midden, PVector position)
   {
     pg = createGraphics(width, height / RIJEN, P2D);
     pg.beginDraw();
     pg.imageMode(CENTER);
+    pg.rectMode(CENTER);
     pg.endDraw();
 
     pos = position;
@@ -26,14 +27,13 @@ class Row
 
   void render()
   {
-    int rowNum = 0;
-    int xPos = SPACE;
-    int yPos = SPACE;
+    pg.beginDraw();
+    pg.clear();
+    pg.endDraw();
     //Teken Middelste Kaart
-    xPos = pg.width/2;
-    yPos = pg.height/2;
+    int xPos = pg.width/2;
+    int yPos = pg.height/2;
     getMidden().tekenen(pg, xPos, yPos, kaartBreedte, kaartHoogte);
-
 
     //Teken Kaarten Links
     xPos = pg.width/2 - (kaartBreedte+SPACE);
@@ -43,42 +43,23 @@ class Row
       xPos -= (( getLinks().size() * (kaartBreedte + SPACE) ) > maxRijBreedte) ? kaartBreedte/3 : kaartBreedte + SPACE;
     }
     
-    pg.beginDraw();
-    pg.fill(color(255,0,0));
-    pg.ellipse(xPos, yPos, 10, 10);
-    pg.fill(color(0,0,0));
-    pg.endDraw();
-
     //Teken Plaats Links
-    rectMode(CENTER);
-    Plaatsen[rowNum].tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
-    hitboxes.add(Plaatsen[rowNum]);
+    optieLinks.tekenen(pg, xPos, yPos, kaartBreedte, kaartHoogte);
     
-
-    //Teken Kaarten Rechts
-    xPos = (pg.width/2)+(kaartBreedte/2);
-    for (Kaart r : getRechts())
+    //Teken Kaarten Links
+    xPos = pg.width/2 + (kaartBreedte+SPACE);
+    for (Kaart k : getLinks())
     {
-      r.tekenen(pg, xPos, yPos, kaartBreedte, kaartHoogte);
-      if ((getRechts().size() * kaartBreedte+SPACE) > maxRijBreedte)
-      {
-        xPos += kaartBreedte/3;
-      } else
-      {
-        xPos += kaartBreedte + SPACE;
-      }
+      k.tekenen(pg, xPos, yPos, kaartBreedte, kaartHoogte);
+      xPos += (( getLinks().size() * (kaartBreedte + SPACE) ) > maxRijBreedte) ? kaartBreedte/3 : kaartBreedte + SPACE;
     }
-    if ((getRechts().size() * kaartBreedte+SPACE) > maxRijBreedte)
-    {
-      xPos += (kaartBreedte/3 + kaartBreedte/3 + SPACE);
-    }
+    optieRechts.tekenen(pg, xPos, yPos, kaartBreedte, kaartHoogte);
 
-    //Teken Plaats Rechts
-    Plaatsen[rowNum+RIJEN].tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
-    hitboxes.add(Plaatsen[rowNum+RIJEN]);
-    xPos += kaartBreedte + SPACE;
-
-    //Volgende Rij
+    //    if ((getRechts().size() * kaartBreedte+SPACE) > maxRijBreedte)
+    //    {
+    //      xPos += (kaartBreedte/3 + kaartBreedte/3 + SPACE);
+    //    }
+    
     image(pg, pos.x, pos.y);
   }
 
