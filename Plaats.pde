@@ -1,13 +1,9 @@
-class Plaats implements Hitbox
+class Plaats extends Hitbox
 {
   int rij;
   boolean links;
   boolean geselecteerd;
   
-  int x1;
-  int y1;
-  int x2;
-  int y2;
   
   Plaats(int rij, boolean links)
   {
@@ -34,13 +30,8 @@ class Plaats implements Hitbox
   
   boolean Match()
   {
-   if (mouseX>=x1 && mouseX<=x2 && mouseY>=y1 && mouseY<=y2)
-   {
-     geselecteerd = true;
-     return true;
-   }
-   geselecteerd = false;
-   return false;
+    geselecteerd = super.Match();
+    return geselecteerd;
   }
   
   void tekenen(int xPos, int yPos, int plaatsBreedte, int plaatsHoogte)
@@ -52,6 +43,5 @@ class Plaats implements Hitbox
       if(geselecteerd)fill(0,100,0);
       else fill(0,20,0);
       rect(xPos, yPos, plaatsBreedte, plaatsHoogte);
-      
   }
 }

@@ -14,7 +14,6 @@ void setup() {
   surface.setTitle("Never Ending Game...");
 
   loadSettings();
-  resetTellers();
   stelDimensiesIn();
 
   if (!cardfacesAreIntegrous()) generateCardfaces();
@@ -22,6 +21,7 @@ void setup() {
   Deck = createDeck();
   Speelveld = generateSpeelveld();
   Plaatsen = generatePlaatsen();
+  resetTellers();
 }
 
 int kaartTellerDezeBeurt;
@@ -32,6 +32,7 @@ boolean langsteDezeBeurt;
 boolean geefVolgendeWeer;
 boolean geefStrafWeer;
 strafvenster straf;
+ArrayList<Row> langsteRijenBegin = new ArrayList<Row>();
 
 void runGameLogic(Row rij, boolean links, boolean hoger)
 {
@@ -62,6 +63,22 @@ void volgendeSpeler()
 
 void resetTellers()
 {
+  if (!REALTIME_LANGSTE_RIJ)
+  {
+    langsteRijenBegin.clear();
+    int langste = 0;
+    for (Row row : Speelveld)
+    {
+      langste = Math.max(langste, row.getSize());
+    }
+    for (Row row : Speelveld)
+    {
+      if (row.getSize() == langste)
+      {
+        langsteRijenBegin.add(row);
+      }
+    }
+  }
   kaartTellerDezeBeurt = 0;
   langsteDezeBeurt = !VEREIS_LANGSTE_RIJ;
   geefVolgendeWeer = false;
@@ -69,12 +86,16 @@ void resetTellers()
 
 boolean isLangsteRij(Row teVergelijken)
 {
-  int langste = 0;
-  for (Row rij : Speelveld)
+  if (REALTIME_LANGSTE_RIJ)
   {
-    langste = Math.max(langste, rij.getSize());
+    int langste = 0;
+    for (Row rij : Speelveld)
+    {
+      langste = Math.max(langste, rij.getSize());
+    }
+    return langste == teVergelijken.getSize();
   }
-  return langste == teVergelijken.getSize();
+  return langsteRijenBegin.contains(teVergelijken);
 }
 
 Row[] generateSpeelveld()
@@ -232,25 +253,27 @@ void mousePressed() {
   {
     if (hb.Match())
     {
-      if (hb instanceof knophogerlager)
-      {
-        for (Plaats p : Plaatsen)
-        {
-          if (p.getSelect())
-          {
-            runGameLogic(Speelveld[p.getRij()], p.getLinks(), ((knophogerlager) hb).getHoger());
-            return;
-          }
-        }
-      }
-      else if (hb instanceof knop)
-      {
-        if (((knop) hb).getNaam().equals("volgende"));
-        {
-          volgendeSpeler();
-          return;
-        }
-      }
+      hb.onClick();
+      return;
+      //if (hb instanceof knophogerlager)
+      //{
+      //  for (Plaats p : Plaatsen)
+      //  {
+      //    if (p.getSelect())
+      //    {
+      //      runGameLogic(Speelveld[p.getRij()], p.getLinks(), ((knophogerlager) hb).getHoger());
+      //      return;
+      //    }
+      //  }
+      //}
+      //else if (hb instanceof knop)
+      //{
+      //  if (((knop) hb).getNaam().equals("volgende"));
+      //  {
+      //    volgendeSpeler();
+      //    return;
+      //  }
+      //}
     }
   }
 }

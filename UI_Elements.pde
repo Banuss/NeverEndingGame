@@ -1,10 +1,21 @@
-class knophogerlager implements Hitbox
+abstract class Hitbox
+{
+  protected int x1;
+  protected int y1;
+  protected int x2;
+  protected int y2;
+  
+  boolean Match()
+  {
+    return mouseX>=x1 && mouseX<=x2 && mouseY>=y1 && mouseY<=y2;
+  }
+  
+  //abstract void onClick();
+}
+
+class knophogerlager extends Hitbox
 {
   boolean hoger = false;
-  int x1;
-  int y1;
-  int x2;
-  int y2;
 
   knophogerlager(boolean hoger)
   {
@@ -14,11 +25,6 @@ class knophogerlager implements Hitbox
   boolean getHoger()
   {
     return hoger;
-  }
-
-  boolean Match()
-  {
-    return (mouseX>=x1 && mouseX<=x2 && mouseY>=y1 && mouseY<=y2);
   }
 
   void tekenen(int xPos, int yPos, int plaatsBreedte, int plaatsHoogte)
@@ -39,14 +45,10 @@ class knophogerlager implements Hitbox
 }
 
 
-class knop implements Hitbox
+class knop extends Hitbox
 {
   String name;
   String text;
-  int x1;
-  int y1;
-  int x2;
-  int y2;
 
   knop(String name, String text)
   {
@@ -68,20 +70,11 @@ class knop implements Hitbox
     fill(100, 255, 100);
     rect(xPos, yPos, knopBreedte, knopHoogte);
   }
-
-  boolean Match()
-  {
-    return (mouseX>=x1 && mouseX<=x2 && mouseY>=y1 && mouseY<=y2);
-  }
 }
 
-class strafvenster implements Hitbox
+class strafvenster extends Hitbox
 {
   int sips;
-  int x1;
-  int y1;
-  int x2;
-  int y2;
 
   strafvenster(int sips)
   {
@@ -100,10 +93,5 @@ class strafvenster implements Hitbox
     textFont(createFont("fonts/keed.ttf", 72));
     textAlign(CENTER, CENTER);
     text(sips + " SLOK" + (sips != 1 ? "KEN" : ""),(breedte/2), (hoogte/2));
-  }
-
-  boolean Match()
-  {
-    return (mouseX>=x1 && mouseX<=x2 && mouseY>=y1 && mouseY<=y2);
   }
 }
