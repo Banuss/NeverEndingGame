@@ -39,9 +39,9 @@ void runGameLogic(Row rij, boolean links, boolean hoger)
   Kaart k = Deck.pop();
   if (!rij.addKaart(k, links, hoger))
   {
-    println("drink " + rij.getStraf() + " keer");
+    println("drink " + rij.getStraf(k, links) + " keer");
     geefStrafWeer = true;
-    straf = new strafvenster(rij.getStraf());
+    straf = new strafvenster(rij.getStraf(k, links));
     ArrayList<Kaart> eruit = rij.bijFout(k);
     Deck.addAll(eruit);
     if (RESET_BIJ_FOUT) {

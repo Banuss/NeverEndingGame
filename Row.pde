@@ -11,9 +11,9 @@ class Row
     this.midden = midden;
   }
 
-  public int getStraf()
+  public int getStraf(Kaart k, boolean links)
   {
-    return getSize()  + (TEL_FOUT_MEE ? 1 : 0);
+    return (getSize() + (TEL_FOUT_MEE ? 1 : 0)) * (DUBBEL_BIJ_DUBBEL && isDubbel(k, links) ? 2 : 1);
   }
 
   public int getSize()
@@ -40,12 +40,15 @@ class Row
     return alle;
   }
   
+  public boolean isDubbel(Kaart k, boolean linkerkant)
+  {
+    return k.waarde == getUiterste(linkerkant ? links : rechts).waarde;
+  }
+  
   public boolean addKaart(Kaart add, boolean links, boolean hoger)
   {
-    if(links) return addGeneric(add, hoger, this.links);
-    else return addGeneric(add, hoger, this.rechts);
+    return addGeneric(add, hoger, links ? this.links : rechts);
   }
-
 
   public boolean addLinks(Kaart add, boolean hoger)
   {
@@ -60,7 +63,7 @@ class Row
   private boolean addGeneric(Kaart add, boolean hoger, ArrayList<Kaart> kant)
   {
     // Vergelijk de kaart met de uiterste aan die kant (mogelijk het midden)
-    Kaart huidig = kant.isEmpty() ? midden : kant.get(kant.size() - 1);
+    Kaart huidig = getUiterste(kant);
 
     if (hoger)
     {
@@ -74,6 +77,11 @@ class Row
 
     kant.add(add);
     return true;
+  }
+  
+  public Kaart getUiterste(ArrayList<Kaart> kant)
+  {
+    return kant.isEmpty() ? midden : kant.get(kant.size() - 1);
   }
 
   public Kaart getMidden()

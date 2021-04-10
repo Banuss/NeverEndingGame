@@ -1,4 +1,4 @@
-class Kaart implements Hitbox
+class Kaart
 {
   final PImage image;
   final int waarde;
@@ -26,11 +26,6 @@ class Kaart implements Hitbox
   PImage getImage()
   {
     return image;
-  }
-  
-  boolean Match()
-  {
-   return (mouseX>=x1 && mouseX<=x2 && mouseY>=y1 && mouseY<=y2);
   }
   
   void tekenen(int xPos, int yPos, int kaartBreedte, int kaartHoogte)
