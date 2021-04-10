@@ -161,7 +161,7 @@ void draw() {
     if (geefVolgendeWeer)
     {
       xPos += uiWidth + SPACE;
-      knop kvolgende = new knop("volgende", "Volgende");
+      volgendeKnop kvolgende = new volgendeKnop();
       kvolgende.tekenen(xPos, yPos, uiWidth, uiWidth);
       hitboxes.add(kvolgende);
     }
@@ -255,25 +255,6 @@ void mousePressed() {
     {
       hb.onClick();
       return;
-      //if (hb instanceof knophogerlager)
-      //{
-      //  for (Plaats p : Plaatsen)
-      //  {
-      //    if (p.getSelect())
-      //    {
-      //      runGameLogic(Speelveld[p.getRij()], p.getLinks(), ((knophogerlager) hb).getHoger());
-      //      return;
-      //    }
-      //  }
-      //}
-      //else if (hb instanceof knop)
-      //{
-      //  if (((knop) hb).getNaam().equals("volgende"));
-      //  {
-      //    volgendeSpeler();
-      //    return;
-      //  }
-      //}
     }
   }
 }

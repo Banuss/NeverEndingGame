@@ -4,13 +4,13 @@ abstract class Hitbox
   protected int y1;
   protected int x2;
   protected int y2;
-  
+
   boolean Match()
   {
     return mouseX>=x1 && mouseX<=x2 && mouseY>=y1 && mouseY<=y2;
   }
-  
-  //abstract void onClick();
+
+  abstract void onClick();
 }
 
 class knophogerlager extends Hitbox
@@ -20,11 +20,6 @@ class knophogerlager extends Hitbox
   knophogerlager(boolean hoger)
   {
     this.hoger = hoger;
-  }
-
-  boolean getHoger()
-  {
-    return hoger;
   }
 
   void tekenen(int xPos, int yPos, int plaatsBreedte, int plaatsHoogte)
@@ -42,25 +37,23 @@ class knophogerlager extends Hitbox
     }
     rect(xPos, yPos, plaatsBreedte, plaatsHoogte);
   }
+
+  public void onClick()
+  {
+    for (Plaats p : Plaatsen)
+    {
+      if (p.getSelect())
+      {
+        runGameLogic(Speelveld[p.getRij()], p.getLinks(), hoger);
+        return;
+      }
+    }
+  }
 }
 
 
-class knop extends Hitbox
+class volgendeKnop extends Hitbox
 {
-  String name;
-  String text;
-
-  knop(String name, String text)
-  {
-    this.name = name;
-    this.text = text;
-  }
-
-  String getNaam() //getName mag ook al niet
-  {
-    return name;
-  }
-
   void tekenen(int xPos, int yPos, int knopBreedte, int knopHoogte)
   {
     x1 = xPos;
@@ -69,6 +62,11 @@ class knop extends Hitbox
     y2 = (yPos + knopHoogte);
     fill(100, 255, 100);
     rect(xPos, yPos, knopBreedte, knopHoogte);
+  }
+  
+  public void onClick()
+  {
+    volgendeSpeler();
   }
 }
 
@@ -92,6 +90,10 @@ class strafvenster extends Hitbox
     fill(0, 0, 0);
     textFont(createFont("fonts/keed.ttf", 72));
     textAlign(CENTER, CENTER);
-    text(sips + " SLOK" + (sips != 1 ? "KEN" : ""),(breedte/2), (hoogte/2));
+    text(sips + " SLOK" + (sips != 1 ? "KEN" : ""), (breedte/2), (hoogte/2));
+  }
+
+  public void onClick() {
+    assert false : "Wordt elders geregeld";
   }
 }

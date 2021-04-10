@@ -27,11 +27,13 @@ class Plaats extends Hitbox
     return links;
   }
   
-  
-  boolean Match()
+  public void onClick()
   {
-    geselecteerd = super.Match();
-    return geselecteerd;
+    for (Plaats p : Plaatsen)
+    {
+      p.geselecteerd = false;
+    }
+    geselecteerd = true;
   }
   
   void tekenen(int xPos, int yPos, int plaatsBreedte, int plaatsHoogte)
