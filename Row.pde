@@ -3,12 +3,16 @@ class Row
   ArrayList<Kaart> links;
   ArrayList<Kaart> rechts;
   Kaart midden;
+  Plaats optieLinks;
+  Plaats optieRechts;
   PGraphics canvas;
 
   Row(Kaart midden)
   {
     links = new ArrayList<Kaart>();
+    optieLinks = new Plaats(this, true);
     rechts = new ArrayList<Kaart>();
+    optieRechts = new Plaats(this, false);
     this.midden = midden;
   }
 

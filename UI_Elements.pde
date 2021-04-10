@@ -4,6 +4,11 @@ abstract class Hitbox
   protected int y1;
   protected int x2;
   protected int y2;
+  
+  Hitbox()
+  {
+    hitboxes.add(this);
+  }
 
   boolean Match()
   {
@@ -11,6 +16,11 @@ abstract class Hitbox
   }
 
   abstract void onClick();
+  
+  void destroy()
+  {
+    hitboxes.remove(this);
+  }
 }
 
 class knophogerlager extends Hitbox
@@ -40,13 +50,9 @@ class knophogerlager extends Hitbox
 
   public void onClick()
   {
-    for (Plaats p : Plaatsen)
+    if (geselecteerd != null)
     {
-      if (p.getSelect())
-      {
-        runGameLogic(Speelveld[p.getRij()], p.getLinks(), hoger);
-        return;
-      }
+      runGameLogic(geselecteerd.rij, geselecteerd.getLinks(), hoger);
     }
   }
 }

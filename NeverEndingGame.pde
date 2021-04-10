@@ -1,11 +1,12 @@
 import java.util.ArrayDeque;
+import java.util.HashSet;
 
 final int SPACE = 8;
 
 ArrayDeque<Kaart> Deck;
 Row[] Speelveld;
-Plaats[] Plaatsen;
-ArrayList<Hitbox> hitboxes = new ArrayList<Hitbox>();
+HashSet<Hitbox> hitboxes = new HashSet<Hitbox>();
+Plaats geselecteerd = null;
 
 void setup() {
   fullScreen(P2D);
@@ -20,7 +21,6 @@ void setup() {
 
   Deck = createDeck();
   Speelveld = generateSpeelveld();
-  Plaatsen = generatePlaatsen();
   resetTellers();
 }
 
@@ -104,20 +104,6 @@ Row[] generateSpeelveld()
   for (int i = 0; i < result.length; i++)
   {
     result[i] = new Row(Deck.pop());
-  }
-  return result;
-}
-
-Plaats[] generatePlaatsen()
-{
-  Plaats[] result = new Plaats[RIJEN*2];
-  for (int i = 0; i < RIJEN; i++)
-  {
-    result[i] = new Plaats(i, true);
-  }
-  for (int i = 0; i < RIJEN; i++)
-  {
-    result[i+RIJEN] = new Plaats(i, false);
   }
   return result;
 }
@@ -206,8 +192,8 @@ void draw() {
       }
 
       //Teken Plaats Links
-      Plaatsen[rowNum].tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
-      hitboxes.add(Plaatsen[rowNum]);
+      //Plaatsen[rowNum].tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
+      //hitboxes.add(Plaatsen[rowNum]);
 
       //Teken Kaarten Rechts
       xPos = (width/2)+(kaartBreedte/2);
@@ -228,8 +214,8 @@ void draw() {
       }
 
       //Teken Plaats Rechts
-      Plaatsen[rowNum+RIJEN].tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
-      hitboxes.add(Plaatsen[rowNum+RIJEN]);
+      //Plaatsen[rowNum+RIJEN].tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
+      //hitboxes.add(Plaatsen[rowNum+RIJEN]);
       xPos += kaartBreedte + SPACE;
 
       //Volgende Rij
