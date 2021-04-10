@@ -14,6 +14,7 @@ class Row
     pg.beginDraw();
     pg.imageMode(CENTER);
     pg.rectMode(CENTER);
+    pg.noStroke();
     pg.endDraw();
 
     pos = position;
@@ -42,24 +43,24 @@ class Row
       k.tekenen(pg, xPos, yPos, kaartBreedte, kaartHoogte);
       xPos -= (( getLinks().size() * (kaartBreedte + SPACE) ) > maxRijBreedte) ? kaartBreedte/3 : kaartBreedte + SPACE;
     }
-    
     //Teken Plaats Links
     optieLinks.tekenen(pg, xPos, yPos, kaartBreedte, kaartHoogte);
-    
-    //Teken Kaarten Links
+
+    //Teken Kaarten Rechts
     xPos = pg.width/2 + (kaartBreedte+SPACE);
-    for (Kaart k : getLinks())
+    for (Kaart k : getRechts())
     {
       k.tekenen(pg, xPos, yPos, kaartBreedte, kaartHoogte);
-      xPos += (( getLinks().size() * (kaartBreedte + SPACE) ) > maxRijBreedte) ? kaartBreedte/3 : kaartBreedte + SPACE;
+      xPos += (( getRechts().size() * (kaartBreedte + SPACE) ) > maxRijBreedte) ? kaartBreedte/3 : kaartBreedte + SPACE;
     }
+    //Teken Plaats Rechts
     optieRechts.tekenen(pg, xPos, yPos, kaartBreedte, kaartHoogte);
 
     //    if ((getRechts().size() * kaartBreedte+SPACE) > maxRijBreedte)
     //    {
     //      xPos += (kaartBreedte/3 + kaartBreedte/3 + SPACE);
     //    }
-    
+
     image(pg, pos.x, pos.y);
   }
 
@@ -127,7 +128,6 @@ class Row
       // idem dito voor lager gegokt
       if (!(add.waarde < huidig.waarde)) return false;
     }
-
     kant.add(add);
     return true;
   }

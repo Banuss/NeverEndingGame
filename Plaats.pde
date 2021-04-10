@@ -28,9 +28,6 @@ class Plaats extends Hitbox
 
 
     canvas.beginDraw();
-    canvas.fill(color(255, 0, 0));
-    canvas.ellipse(x1, y1, 10, 10);
-
     if (this.equals(geselecteerd))
       canvas.fill(0, 100, 0);
     else

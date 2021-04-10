@@ -19,6 +19,7 @@ abstract class Hitbox
 
   void destroy()
   {
+    println("removed hitbox.");
     hitboxes.remove(this);
   }
 }
@@ -26,26 +27,27 @@ abstract class Hitbox
 class knophogerlager extends Hitbox
 {
   boolean hoger = false;
+  PVector pos, dim;
+  color fillColor;
 
-  knophogerlager(boolean hoger)
+  knophogerlager(boolean hoger, int xPos, int yPos, int plaatsBreedte, int plaatsHoogte)
   {
     this.hoger = hoger;
+    fillColor = (hoger) ? color(0, 255, 0) : color(255, 0, 0);
+    pos = new PVector( xPos, yPos );
+    dim = new PVector( plaatsBreedte, plaatsHoogte );
+    x1 = int(pos.x - dim.x/2);
+    x2 = int(pos.x + dim.x/2);
+    y1 = int(pos.y - dim.y/2);
+    y2 = int(pos.y + dim.y/2);
   }
 
-  void tekenen(int xPos, int yPos, int plaatsBreedte, int plaatsHoogte)
+  void render()
   {
-    x1 = xPos;
-    y1 = yPos;
-    x2 = (xPos + plaatsBreedte);
-    y2 = (yPos + plaatsHoogte);
-    if (hoger)
-    {
-      fill(0, 200, 0);
-    } else
-    {
-      fill(200, 0, 0);
-    }
-    rect(xPos, yPos, plaatsBreedte, plaatsHoogte);
+    pgUI.beginDraw();
+    pgUI.fill(fillColor);
+    pgUI.rect(pos.x, pos.y, dim.x, dim.y);
+    pgUI.endDraw();
   }
 
   public void onClick()
@@ -60,14 +62,26 @@ class knophogerlager extends Hitbox
 
 class volgendeKnop extends Hitbox
 {
-  void tekenen(int xPos, int yPos, int knopBreedte, int knopHoogte)
+  PVector pos, dim;
+  volgendeKnop(int xPos, int yPos, int knopBreedte, int knopHoogte)
   {
-    x1 = xPos;
-    y1 = yPos;
-    x2 = (xPos + knopBreedte);
-    y2 = (yPos + knopHoogte);
-    fill(100, 255, 100);
-    rect(xPos, yPos, knopBreedte, knopHoogte);
+    pos = new PVector( xPos, yPos );
+    dim = new PVector( knopBreedte, knopHoogte );
+    x1 = int(pos.x - dim.x/2);
+    x2 = int(pos.x + dim.x/2);
+    y1 = int(pos.y - dim.y/2);
+    y2 = int(pos.y + dim.y/2);
+  }
+  void render()
+  {
+    pgUI.beginDraw();
+    if (geefVolgendeWeer) {
+      pgUI.fill(0, 0, 255);
+    } else {
+      pgUI.fill(0);
+    }
+    pgUI.rect(pos.x, pos.y, dim.x, dim.y);
+    pgUI.endDraw();
   }
 
   public void onClick()
@@ -79,40 +93,36 @@ class volgendeKnop extends Hitbox
 class strafvenster extends Hitbox
 {
   int sips;
-  PGraphics pg;
-  PVector loc, dim;
+  PVector pos, dim;
 
   strafvenster(int sips)
   {
-    pg = createGraphics(width, height);
-    pg.beginDraw();
-    pg.textFont(uiFont);
-    pg.textAlign(CENTER, CENTER);
-    pg.endDraw();
+    println("Strafvenster created.");
     
-    dim = new PVector(pg.width * 0.8, pg.height * 0.8);
-    loc = new PVector(pg.width/2, pg.height/2);
-    
-    x1 = int(loc.x - dim.x/2);
-    x2 = int(loc.x + dim.x/2);
-    y1 = int(loc.y - dim.y/2);
-    y2 = int(loc.y + dim.y/2);
-    
+    pos = new PVector(pgStraf.width/2, pgStraf.height/2);
+    dim = new PVector(pgStraf.width/2, pgStraf.height/2);
+
+    x1 = int(pos.x - dim.x/2);
+    x2 = int(pos.x + dim.x/2);
+    y1 = int(pos.y - dim.y/2);
+    y2 = int(pos.y + dim.y/2);
+
     this.sips = sips;
   }
 
-  void tekenen()
+  void render()
   {
-    pg.beginDraw();
-    pg.fill(255, 200, 0, 200);
-    pg.rect(loc.x, loc.y, dim.x, dim.y);
-    pg.fill(0, 0, 0);
-    pg.text(sips + " SLOK" + (sips != 1 ? "KEN" : ""), (dim.x/2), (dim.y/2));
-    pg.endDraw();
+    pgStraf.beginDraw();
+    pgStraf.fill(255, 200, 0, 200);
+    pgStraf.rect(pos.x, pos.y, dim.x, dim.y);
+    pgStraf.fill(0, 0, 0);
+    pgStraf.text(sips + " SLOK" + (sips != 1 ? "KEN" : ""), pos.x, pos.y);
+    pgStraf.endDraw();
+    image(pgStraf, 0, 0);
   }
 
   public void onClick() {
   assert false : 
-    "Wordt elders geregeld";
+    "Strafvenster wordt elders geregeld";
   }
 }

@@ -1,4 +1,4 @@
-private String[] getRanks() //<>//
+private String[] getRanks() //<>// //<>//
 {
   return new String[] {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "H", "A"};
 }
@@ -26,7 +26,7 @@ private static final String cardFilenameFormat = "%s_%s.png";
 
 void generateCardfaces() {
   print("Generating cards...");
-  PGraphics PG_card = createGraphics(640, 890);
+  PGraphics PG_card = createGraphics(640, 890, P2D);
   String[] ranks = getRanks();
   Suit[] suits = Suit.values();
   PImage background = loadImage("settings/bg.png");
