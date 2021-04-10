@@ -15,7 +15,7 @@ void setup() {
 
   surface.setTitle("Never Ending Game...");
   uiFont = createFont("fonts/keed.ttf", 72);
-  
+
   loadSettings();
   stelDimensiesIn();
 
@@ -122,50 +122,46 @@ void stelDimensiesIn()
 }
 
 void draw() {
-  clear();
-  int xPos = SPACE, yPos = SPACE;
   if (geefStrafWeer && straf!=null)
   {
-    xPos = 100;
-    yPos = 100;
     straf.tekenen();
   } else
   {
-    //Links
-    knophogerlager lagerl = new knophogerlager(false);
-    lagerl.tekenen(xPos, yPos, uiWidth, uiHeight);
-    hitboxes.add(lagerl);
+    ////Links
+    //knophogerlager lagerl = new knophogerlager(false);
+    //lagerl.tekenen(xPos, yPos, uiWidth, uiHeight);
+    //hitboxes.add(lagerl);
 
-    yPos += uiHeight + SPACE;
-    knophogerlager hogerl = new knophogerlager(true);
-    hogerl.tekenen(xPos, yPos, uiWidth, uiHeight);
-    hitboxes.add(hogerl);
+    //yPos += uiHeight + SPACE;
+    //knophogerlager hogerl = new knophogerlager(true);
+    //hogerl.tekenen(xPos, yPos, uiWidth, uiHeight);
+    //hitboxes.add(hogerl);
 
-    yPos = SPACE;
+    //yPos = SPACE;
 
-    // Volgende Speler 
-    if (geefVolgendeWeer)
-    {
-      xPos += uiWidth + SPACE;
-      volgendeKnop kvolgende = new volgendeKnop();
-      kvolgende.tekenen(xPos, yPos, uiWidth, uiWidth);
-      hitboxes.add(kvolgende);
-    }
+    //// Volgende Speler 
+    //if (geefVolgendeWeer)
+    //{
+    //  xPos += uiWidth + SPACE;
+    //  volgendeKnop kvolgende = new volgendeKnop();
+    //  kvolgende.tekenen(xPos, yPos, uiWidth, uiWidth);
+    //  hitboxes.add(kvolgende);
+    //}
 
 
-    xPos = width - uiWidth - SPACE;
+    //xPos = width - uiWidth - SPACE;
 
-    //Rechts
-    knophogerlager hogerr = new knophogerlager(true);
-    hogerr.tekenen(xPos, yPos, uiWidth, uiHeight);
-    hitboxes.add(hogerr);
+    ////Rechts
+    //knophogerlager hogerr = new knophogerlager(true);
+    //hogerr.tekenen(xPos, yPos, uiWidth, uiHeight);
+    //hitboxes.add(hogerr);
 
-    yPos += uiHeight + SPACE;
-    knophogerlager lagerr= new knophogerlager(false);
-    lagerr.tekenen(xPos, yPos, uiWidth, uiHeight);
-    hitboxes.add(lagerr);
+    //yPos += uiHeight + SPACE;
+    //knophogerlager lagerr= new knophogerlager(false);
+    //lagerr.tekenen(xPos, yPos, uiWidth, uiHeight);
+    //hitboxes.add(lagerr);
 
-    yPos = SPACE;
+    //yPos = SPACE;
 
     for (Row row : Speelveld) 
     {
@@ -173,6 +169,8 @@ void draw() {
     }
   }
 }
+
+
 
 void mousePressed() {
   //println("Geklikt op: "+mouseX + ":" + mouseY);

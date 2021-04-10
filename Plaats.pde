@@ -19,13 +19,18 @@ class Plaats extends Hitbox
     geselecteerd = this;
   }
 
-  void tekenen(PGraphics canvas,int xPos, int yPos, int plaatsBreedte, int plaatsHoogte)
+  void tekenen(PGraphics canvas, int xPos, int yPos, int plaatsBreedte, int plaatsHoogte)
   {
-    x1 = xPos;
-    y1 = yPos;
-    x2 = (xPos + plaatsBreedte);
-    y2 = (yPos + plaatsHoogte);
+    x1 = int( xPos + rij.pos.x - plaatsBreedte / 2 );
+    y1 = int( yPos + rij.pos.y - plaatsHoogte / 2);
+    x2 = int( xPos + plaatsBreedte/2 + rij.pos.x );
+    y2 = int( yPos + plaatsHoogte/2 + rij.pos.y );
+
+
     canvas.beginDraw();
+    canvas.fill(color(255, 0, 0));
+    canvas.ellipse(x1, y1, 10, 10);
+
     if (this.equals(geselecteerd))
       canvas.fill(0, 100, 0);
     else
