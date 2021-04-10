@@ -216,7 +216,7 @@ void draw() {
         xPos = SPACE;
         yPos = SPACE;
         straf.tekenen(xPos, yPos, (width-SPACE-SPACE), (height-SPACE-SPACE));
-        hitboxes.add(straf);
+        //hitboxes.add(straf);
       }
     }
   }
@@ -224,15 +224,19 @@ void draw() {
 
 void mousePressed() {
   //println("Geklikt op: "+mouseX + ":" + mouseY);
+  if (geefStrafWeer)
+  {
+    if (straf != null && straf.Match())
+    {
+      geefStrafWeer = false;
+    }
+    return;
+  }
   for (Hitbox hb : hitboxes)
   {
     if (hb.Match())
     {
-      if (hb instanceof strafvenster)
-      {
-        geefStrafWeer = false;
-        return;
-      } else if (hb instanceof knophogerlager)
+      if (hb instanceof knophogerlager)
       {
         for (Plaats p : Plaatsen)
         {
@@ -242,7 +246,8 @@ void mousePressed() {
             return;
           }
         }
-      } else if (hb instanceof knop)
+      }
+      else if (hb instanceof knop)
       {
         if (((knop) hb).getNaam().equals("volgende"));
         {
