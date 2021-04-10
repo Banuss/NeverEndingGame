@@ -89,6 +89,7 @@ void stelUIin()
   pgStraf.rectMode(CENTER);
   pgStraf.textFont(uiFont);
   pgStraf.textAlign(CENTER, CENTER);
+  pgStraf.textSize(150);
   pgStraf.endDraw();
 }
 
@@ -108,7 +109,10 @@ void renderBoard()
 {
   println("renderBoard()");
 
-  // Knoppen 
+  // Knoppen
+  pgUI.beginDraw();
+  pgUI.clear();
+  pgUI.endDraw();
   for (volgendeKnop knop : KnoppenVolgende) {
     knop.render();
   }

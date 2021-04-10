@@ -97,8 +97,6 @@ class strafvenster extends Hitbox
 
   strafvenster(int sips)
   {
-    println("Strafvenster created.");
-    
     pos = new PVector(pgStraf.width/2, pgStraf.height/2);
     dim = new PVector(pgStraf.width/2, pgStraf.height/2);
 
@@ -113,6 +111,7 @@ class strafvenster extends Hitbox
   void render()
   {
     pgStraf.beginDraw();
+    pgStraf.clear();
     pgStraf.fill(255, 200, 0, 200);
     pgStraf.rect(pos.x, pos.y, dim.x, dim.y);
     pgStraf.fill(0, 0, 0);
