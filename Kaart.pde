@@ -10,21 +10,17 @@ class Kaart
     assert waarde <= 14;
     this.waarde = waarde;
   }
-  
-  void render(PGraphics canvas, PVector position, PVector dimensions) {
-    canvas.beginDraw();
-    canvas.imageMode(CENTER);
-    canvas.image(image, position.x, position.y, dimensions.x, dimensions.y);
-    canvas.endDraw();
-  }
-  
+
   PImage getImage()
   {
     return image;
   }
-  
-  void tekenen(int xPos, int yPos, int kaartBreedte, int kaartHoogte)
+
+  void tekenen(PGraphics canvas, int xPos, int yPos, int kaartBreedte, int kaartHoogte)
   {
-      image(image, xPos, yPos, kaartBreedte, kaartHoogte);
+    canvas.beginDraw();
+    canvas.image(image, xPos, yPos, kaartBreedte, kaartHoogte);
+    canvas.endDraw();
+    
   }
 }

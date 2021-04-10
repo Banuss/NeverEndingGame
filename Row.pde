@@ -3,18 +3,85 @@ class Row
   ArrayList<Kaart> links;
   ArrayList<Kaart> rechts;
   Kaart midden;
+  PGraphics pg;
   Plaats optieLinks;
   Plaats optieRechts;
-  PGraphics canvas;
+  PVector pos;
 
-  Row(Kaart midden)
+  Row(Kaart midden, PVector position)
   {
+    pg = createGraphics(width, height / RIJEN, P2D);
+    pg.beginDraw();
+    pg.imageMode(CENTER);
+    pg.endDraw();
+
+    pos = position;
+
     links = new ArrayList<Kaart>();
     optieLinks = new Plaats(this, true);
     rechts = new ArrayList<Kaart>();
     optieRechts = new Plaats(this, false);
     this.midden = midden;
   }
+
+  void render()
+  {
+    int rowNum = 0;
+    int xPos = SPACE;
+    int yPos = SPACE;
+    //Teken Middelste Kaart
+    xPos = pg.width/2;
+    yPos = pg.height/2;
+    getMidden().tekenen(pg, xPos, yPos, kaartBreedte, kaartHoogte);
+
+
+    //Teken Kaarten Links
+    xPos = pg.width/2 - (kaartBreedte+SPACE);
+    for (Kaart k : getLinks())
+    {
+      k.tekenen(pg, xPos, yPos, kaartBreedte, kaartHoogte);
+      xPos -= (( getLinks().size() * (kaartBreedte + SPACE) ) > maxRijBreedte) ? kaartBreedte/3 : kaartBreedte + SPACE;
+    }
+    
+    pg.beginDraw();
+    pg.fill(color(255,0,0));
+    pg.ellipse(xPos, yPos, 10, 10);
+    pg.fill(color(0,0,0));
+    pg.endDraw();
+
+    //Teken Plaats Links
+    rectMode(CENTER);
+    Plaatsen[rowNum].tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
+    hitboxes.add(Plaatsen[rowNum]);
+    
+
+    //Teken Kaarten Rechts
+    xPos = (pg.width/2)+(kaartBreedte/2);
+    for (Kaart r : getRechts())
+    {
+      r.tekenen(pg, xPos, yPos, kaartBreedte, kaartHoogte);
+      if ((getRechts().size() * kaartBreedte+SPACE) > maxRijBreedte)
+      {
+        xPos += kaartBreedte/3;
+      } else
+      {
+        xPos += kaartBreedte + SPACE;
+      }
+    }
+    if ((getRechts().size() * kaartBreedte+SPACE) > maxRijBreedte)
+    {
+      xPos += (kaartBreedte/3 + kaartBreedte/3 + SPACE);
+    }
+
+    //Teken Plaats Rechts
+    Plaatsen[rowNum+RIJEN].tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
+    hitboxes.add(Plaatsen[rowNum+RIJEN]);
+    xPos += kaartBreedte + SPACE;
+
+    //Volgende Rij
+    image(pg, pos.x, pos.y);
+  }
+
 
   public int getStraf(Kaart k, boolean links)
   {

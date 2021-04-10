@@ -11,7 +11,7 @@ Plaats geselecteerd = null;
 void setup() {
   fullScreen(P2D);
   background(0);
-  
+
   surface.setTitle("Never Ending Game...");
 
   loadSettings();
@@ -103,7 +103,7 @@ Row[] generateSpeelveld()
   Row[] result = new Row[RIJEN];
   for (int i = 0; i < result.length; i++)
   {
-    result[i] = new Row(Deck.pop());
+    result[i] = new Row(Deck.pop(), new PVector( 0, i * height / RIJEN ) );
   }
   return result;
 }
@@ -115,7 +115,7 @@ void stelDimensiesIn()
   //Reserveer Links en Rechts Ruimte voor UI elements
   uiHeight = (height-(3*SPACE))/2;
   uiWidth = uiHeight/4;
-  
+
   maxRijBreedte = (width/2) - SPACE - uiWidth - SPACE - kaartBreedte - SPACE - SPACE - SPACE - (kaartBreedte/2);
 }
 
@@ -132,18 +132,20 @@ void draw() {
   {
     // Re-assign hitboxes
     hitboxes.clear();
-    int rowNum = 0;
 
     //Links
     knophogerlager lagerl = new knophogerlager(false);
     lagerl.tekenen(xPos, yPos, uiWidth, uiHeight);
     hitboxes.add(lagerl);
+
     yPos += uiHeight + SPACE;
     knophogerlager hogerl = new knophogerlager(true);
     hogerl.tekenen(xPos, yPos, uiWidth, uiHeight);
     hitboxes.add(hogerl);
+
     yPos = SPACE;
 
+    // Volgende Speler 
     if (geefVolgendeWeer)
     {
       xPos += uiWidth + SPACE;
@@ -159,74 +161,24 @@ void draw() {
     knophogerlager hogerr = new knophogerlager(true);
     hogerr.tekenen(xPos, yPos, uiWidth, uiHeight);
     hitboxes.add(hogerr);
+
     yPos += uiHeight + SPACE;
     knophogerlager lagerr= new knophogerlager(false);
     lagerr.tekenen(xPos, yPos, uiWidth, uiHeight);
     hitboxes.add(lagerr);
+
     yPos = SPACE;
 
     for (Row row : Speelveld) 
-    { 
-
-      //Teken Middelste Kaart
-      xPos = (width/2)-(kaartBreedte/2)-SPACE;
-      row.getMidden().tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
-
-      xPos = (width/2)-(kaartBreedte/2)-kaartBreedte - SPACE - SPACE;
-
-      //Teken Kaarten Links
-      for (Kaart l : row.getLinks())
-      {
-        l.tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
-        if ((row.getLinks().size() * kaartBreedte+SPACE)> maxRijBreedte)
-        {
-          xPos -= kaartBreedte/3;
-        } else
-        {
-          xPos -= kaartBreedte + SPACE;
-        }
-      }
-      if ((row.getLinks().size() * kaartBreedte+SPACE)> maxRijBreedte)
-      {
-        xPos -= (kaartBreedte/3 + kaartBreedte/3 + SPACE);
-      }
-
-      //Teken Plaats Links
-      //Plaatsen[rowNum].tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
-      //hitboxes.add(Plaatsen[rowNum]);
-
-      //Teken Kaarten Rechts
-      xPos = (width/2)+(kaartBreedte/2);
-      for (Kaart r : row.getRechts())
-      {
-        r.tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
-        if ((row.getRechts().size() * kaartBreedte+SPACE)> maxRijBreedte)
-        {
-          xPos += kaartBreedte/3;
-        } else
-        {
-          xPos += kaartBreedte + SPACE;
-        }
-      }
-      if ((row.getRechts().size() * kaartBreedte+SPACE)> maxRijBreedte)
-      {
-        xPos += (kaartBreedte/3 + kaartBreedte/3 + SPACE);
-      }
-
-      //Teken Plaats Rechts
-      //Plaatsen[rowNum+RIJEN].tekenen(xPos, yPos, kaartBreedte, kaartHoogte);
-      //hitboxes.add(Plaatsen[rowNum+RIJEN]);
-      xPos += kaartBreedte + SPACE;
-
-      //Volgende Rij
-      yPos += (kaartHoogte + SPACE);
-      rowNum++;
+    {
+      row.render();
     }
   }
 }
 
 void mousePressed() {
   //println("Geklikt op: "+mouseX + ":" + mouseY);
+
   if (geefStrafWeer)
   {
     if (straf != null && straf.Match())
@@ -235,6 +187,7 @@ void mousePressed() {
     }
     return;
   }
+
   for (Hitbox hb : hitboxes)
   {
     if (hb.Match())
