@@ -3,6 +3,7 @@ class Row
   ArrayList<Kaart> links;
   ArrayList<Kaart> rechts;
   Kaart midden;
+  PGraphics canvas;
 
   Row(Kaart midden)
   {
@@ -21,7 +22,7 @@ class Row
     return 1 + links.size() + rechts.size();
   }
 
-  /**
+  /*
    * Roep dit aan om een nieuw midden te plaatsen
    * Alle andere kaarten worden uit de rij gehaald en geschud zodat je ze onder op de stapel kan doen
    */
@@ -39,12 +40,12 @@ class Row
 
     return alle;
   }
-  
+
   public boolean isDubbel(Kaart k, boolean linkerkant)
   {
     return k.waarde == getUiterste(linkerkant ? links : rechts).waarde;
   }
-  
+
   public boolean addKaart(Kaart add, boolean links, boolean hoger)
   {
     return addGeneric(add, hoger, links ? this.links : rechts);
@@ -78,7 +79,7 @@ class Row
     kant.add(add);
     return true;
   }
-  
+
   public Kaart getUiterste(ArrayList<Kaart> kant)
   {
     return kant.isEmpty() ? midden : kant.get(kant.size() - 1);

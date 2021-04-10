@@ -8,13 +8,14 @@ Plaats[] Plaatsen;
 ArrayList<Hitbox> hitboxes = new ArrayList<Hitbox>();
 
 void setup() {
+  fullScreen(P2D);
+  background(0);
+  
+  surface.setTitle("Never Ending Game...");
+
   loadSettings();
   resetTellers();
-  size(1024, 640);
-  surface.setTitle("Never Ending Game...");
-  surface.setLocation(100, 100);
-  surface.setResizable(true);
-  background(0);
+  stelDimensiesIn();
 
   if (!cardfacesAreIntegrous()) generateCardfaces();
 
@@ -24,6 +25,9 @@ void setup() {
 }
 
 int kaartTellerDezeBeurt;
+int kaartHoogte, kaartBreedte;
+int uiHeight, uiWidth;
+int maxRijBreedte;
 boolean langsteDezeBeurt;
 boolean geefVolgendeWeer;
 boolean geefStrafWeer;
@@ -97,8 +101,18 @@ Plaats[] generatePlaatsen()
   return result;
 }
 
+void stelDimensiesIn()
+{
+  kaartHoogte = ((height-(SPACE*(RIJEN+1)))/RIJEN);
+  kaartBreedte = (kaartHoogte*2)/3;
+  //Reserveer Links en Rechts Ruimte voor UI elements
+  uiHeight = (height-(3*SPACE))/2;
+  uiWidth = uiHeight/4;
+  
+  maxRijBreedte = (width/2) - SPACE - uiWidth - SPACE - kaartBreedte - SPACE - SPACE - SPACE - (kaartBreedte/2);
+}
 
-void draw() { 
+void draw() {
   clear();
   int xPos = SPACE, yPos = SPACE;
   if (geefStrafWeer && straf!=null)
@@ -109,17 +123,9 @@ void draw() {
     hitboxes.add(straf);
   } else
   {
+    // Re-assign hitboxes
     hitboxes.clear();
-    int kaartHoogte = ((height-(SPACE*(RIJEN+1)))/RIJEN);
-    int kaartBreedte = (kaartHoogte*2)/3;
     int rowNum = 0;
-
-
-    //Reserveer Links en Rechts Ruimte voor UI elements
-    int uiHeight = (height-(3*SPACE))/2;
-    int uiWidth = uiHeight/4;
-
-    int maxRijBreedte = (width/2) - SPACE - uiWidth - SPACE - kaartBreedte - SPACE - SPACE - SPACE - (kaartBreedte/2);
 
     //Links
     knophogerlager lagerl = new knophogerlager(false);
@@ -208,16 +214,6 @@ void draw() {
       //Volgende Rij
       yPos += (kaartHoogte + SPACE);
       rowNum++;
-
-
-      //OverLay Straf
-      if (geefStrafWeer && straf!=null)
-      {
-        xPos = SPACE;
-        yPos = SPACE;
-        straf.tekenen(xPos, yPos, (width-SPACE-SPACE), (height-SPACE-SPACE));
-        //hitboxes.add(straf);
-      }
     }
   }
 }
