@@ -6,9 +6,9 @@ final int SPACE = 8;
 PFont uiFont;
 
 // hoort bij een UI class ofzo
-PGraphics pgUI, pgStraf;
-knophogerlager[] KnoppenHoogLaag;
-volgendeKnop[] KnoppenVolgende;
+PGraphics pgStraf;
+UI ui;
+
 
 final Semaphore mutex = new Semaphore(1, true);
 ArrayDeque<Kaart> Deck;
@@ -44,8 +44,8 @@ void setup() {
 
   Deck = createDeck();
   Speelveld = generateSpeelveld();
-  KnoppenHoogLaag = generateHogerLager();
-  KnoppenVolgende = generateVolgende();
+  ui.KnoppenHoogLaag = generateHogerLager();
+  ui.KnoppenVolgende = generateVolgende();
 
   resetTellers();
 
@@ -64,6 +64,7 @@ void draw()
     render();
   } else
   {
+    println("Rerendering " + changed.size() + " elements");
     for (Render r : changed) {
       r.render();
     }

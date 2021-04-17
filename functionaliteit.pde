@@ -20,6 +20,11 @@ void runGameLogic(Row rij, boolean links, boolean hoger)
         resetTellers();
       }
     }
+    //else
+    //{
+    //  changed.add(rij);
+    //  if (geefVolgendeWeer) changed.add(ui);
+    //}
     mutex.release();
   } 
   catch (InterruptedException e) {
@@ -85,11 +90,7 @@ void stelUIin()
 
   maxRijBreedte = (width/2) - SPACE - uiWidth - SPACE - kaartBreedte - SPACE - SPACE - SPACE - (kaartBreedte/2);
 
-  pgUI = createGraphics(width, height, P2D);
-  pgUI.beginDraw();
-  pgUI.rectMode(CENTER);
-  pgUI.noStroke();
-  pgUI.endDraw();
+  ui = new UI();
 
   pgStraf = createGraphics(width, height, P2D);
   pgStraf.beginDraw();
@@ -124,18 +125,7 @@ void renderBoard()
 {
   println("renderBoard()");
 
-  // Knoppen
-  pgUI.beginDraw();
-  pgUI.clear();
-  pgUI.endDraw();
-  for (volgendeKnop knop : KnoppenVolgende) {
-    knop.render();
-  }
-  for (knophogerlager knop : KnoppenHoogLaag)
-  {
-    knop.render();
-  }
-  image(pgUI, 0, 0);
+  ui.render();
 
   for (Row row : Speelveld) 
   {

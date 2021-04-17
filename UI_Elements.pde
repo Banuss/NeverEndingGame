@@ -48,20 +48,20 @@ class knophogerlager extends Hitbox
 
   void render()
   {
-    pgUI.beginDraw();
-    pgUI.fill(fillColor);
-    pgUI.rect(pos.x, pos.y, dim.x, dim.y);
-    pgUI.endDraw();
+    ui.pgUI.beginDraw();
+    ui.pgUI.fill(fillColor);
+    ui.pgUI.rect(pos.x, pos.y, dim.x, dim.y);
+    ui.pgUI.endDraw();
   }
 
   public void onClick()
   {
-    runGameLogic(geselecteerd.rij, geselecteerd.getLinks(), hoger);
+    if (geselecteerd != null) runGameLogic(geselecteerd.rij, geselecteerd.getLinks(), hoger);
   }
 }
 
 
-class volgendeKnop extends Hitbox
+class volgendeKnop extends Hitbox implements Render
 {
   PVector pos, dim;
   volgendeKnop(int xPos, int yPos, int knopBreedte, int knopHoogte)
@@ -76,19 +76,51 @@ class volgendeKnop extends Hitbox
   
   void render()
   {
-    pgUI.beginDraw();
+    ui.pgUI.beginDraw();
     if (geefVolgendeWeer) {
-      pgUI.fill(0, 0, 255);
+      ui.pgUI.fill(0, 0, 255);
     } else {
-      pgUI.fill(0);
+      ui.pgUI.fill(0);
     }
-    pgUI.rect(pos.x, pos.y, dim.x, dim.y);
-    pgUI.endDraw();
+    ui.pgUI.rect(pos.x, pos.y, dim.x, dim.y);
+    ui.pgUI.endDraw();
   }
   
   public void onClick()
   {
+    if (geselecteerd != null) changed.add(geselecteerd.rij);
     volgendeSpeler();
+    changed.add(ui);
+  }
+}
+
+class UI implements Render
+{
+  PGraphics pgUI;
+  knophogerlager[] KnoppenHoogLaag;
+  volgendeKnop[] KnoppenVolgende;
+  
+  UI() {
+    pgUI = createGraphics(width, height, P2D);
+    pgUI.beginDraw();
+    pgUI.rectMode(CENTER);
+    pgUI.noStroke();
+    pgUI.endDraw();
+  }
+  
+  void render() {
+    // Knoppen
+    pgUI.beginDraw();
+    pgUI.clear();
+    pgUI.endDraw();
+    for (volgendeKnop knop : KnoppenVolgende) {
+      knop.render();
+    }
+    for (knophogerlager knop : KnoppenHoogLaag)
+    {
+      knop.render();
+    }
+    image(pgUI, 0, 0);
   }
 }
 
