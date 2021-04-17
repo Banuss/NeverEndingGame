@@ -1,6 +1,6 @@
 private String[] getRanks() //<>// //<>//
 {
-  return new String[] {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "H", "A"};
+  return new String[] {"2.", "3", "4", "5.", "6.", "7", "8", "9.", "10", "J", "Q", "H", "A"};
 }
 
 enum Suit {
@@ -105,8 +105,7 @@ ArrayDeque<Kaart> createDeck()
       int waarde = 2;
       for (String rank : ranks)
       {
-        PImage image = loadImage(getLocation(suit, rank));
-        kaarten.add(new Kaart(image, waarde));
+        kaarten.add(new Kaart(getLocation(suit, rank), waarde));
         waarde++;
       }
     }

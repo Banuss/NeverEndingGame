@@ -1,3 +1,7 @@
+interface Render {
+  void render();
+}
+
 abstract class Hitbox
 {
   protected int x1;
@@ -52,10 +56,7 @@ class knophogerlager extends Hitbox
 
   public void onClick()
   {
-    if (geselecteerd != null)
-    {
-      runGameLogic(geselecteerd.rij, geselecteerd.getLinks(), hoger);
-    }
+    runGameLogic(geselecteerd.rij, geselecteerd.getLinks(), hoger);
   }
 }
 
@@ -72,6 +73,7 @@ class volgendeKnop extends Hitbox
     y1 = int(pos.y - dim.y/2);
     y2 = int(pos.y + dim.y/2);
   }
+  
   void render()
   {
     pgUI.beginDraw();
@@ -83,7 +85,7 @@ class volgendeKnop extends Hitbox
     pgUI.rect(pos.x, pos.y, dim.x, dim.y);
     pgUI.endDraw();
   }
-
+  
   public void onClick()
   {
     volgendeSpeler();

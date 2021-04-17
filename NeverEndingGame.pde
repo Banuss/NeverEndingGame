@@ -1,5 +1,6 @@
 import java.util.ArrayDeque;
 import java.util.HashSet;
+import java.util.concurrent.Semaphore;
 
 final int SPACE = 8;
 PFont uiFont;
@@ -9,10 +10,12 @@ PGraphics pgUI, pgStraf;
 knophogerlager[] KnoppenHoogLaag;
 volgendeKnop[] KnoppenVolgende;
 
+final Semaphore mutex = new Semaphore(1, true);
 ArrayDeque<Kaart> Deck;
 Row[] Speelveld;
 Plaats geselecteerd = null;
 HashSet<Hitbox> hitboxes = new HashSet<Hitbox>();
+HashSet<Render> changed = new HashSet<Render>();
 
 int kaartTellerDezeBeurt;
 int kaartHoogte, kaartBreedte;
@@ -24,14 +27,17 @@ boolean geefStrafWeer;
 strafvenster straf;
 ArrayList<Row> langsteRijenBegin = new ArrayList<Row>();
 
+void settings() {
+  loadSettings();
+  fullScreen(P2D, SCREEN_NUM);
+}
+
 void setup() {
-  fullScreen(P2D);
   background(0);
 
   surface.setTitle("Never Ending Game...");
   uiFont = createFont("fonts/keed.ttf", 72);
 
-  loadSettings();
   stelUIin();
 
   if (!cardfacesAreIntegrous()) generateCardfaces();
@@ -42,19 +48,27 @@ void setup() {
   KnoppenVolgende = generateVolgende();
 
   resetTellers();
-  
-  textAlign(CENTER,CENTER);
+
+  textAlign(CENTER, CENTER);
   fill(255);
   textFont(uiFont);
   textSize(200);
-  text("Loading...", width/2,height/2);
-  
+  text("Loading...", width/2, height/2);
+
   noLoop();
 }
 
 void draw()
 {
-  render();
+  if (changed.isEmpty()) {
+    render();
+  } else
+  {
+    for (Render r : changed) {
+      r.render();
+    }
+    changed.clear();
+  }
 }
 
 void mousePressed() {
@@ -62,10 +76,11 @@ void mousePressed() {
 
   if (geefStrafWeer)
   {
-    if (straf != null && straf.Match())
+    if (straf != null )
     {
       geefStrafWeer = false;
       straf.destroy();
+      geselecteerd = null;
     }
     redraw();
     return;

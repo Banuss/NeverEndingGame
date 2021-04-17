@@ -1,4 +1,4 @@
-class Row
+class Row implements Render
 {
   ArrayList<Kaart> links;
   ArrayList<Kaart> rechts;
@@ -36,32 +36,33 @@ class Row
     int yPos = pg.height/2;
     getMidden().tekenen(pg, xPos, yPos, kaartBreedte, kaartHoogte);
 
-    //Teken Kaarten Links
-    xPos = pg.width/2 - (kaartBreedte+SPACE);
-    for (Kaart k : getLinks())
-    {
-      k.tekenen(pg, xPos, yPos, kaartBreedte, kaartHoogte);
-      xPos -= (( getLinks().size() * (kaartBreedte + SPACE) ) > maxRijBreedte) ? kaartBreedte/3 : kaartBreedte + SPACE;
-    }
-    //Teken Plaats Links
-    optieLinks.tekenen(pg, xPos, yPos, kaartBreedte, kaartHoogte);
-
-    //Teken Kaarten Rechts
-    xPos = pg.width/2 + (kaartBreedte+SPACE);
-    for (Kaart k : getRechts())
-    {
-      k.tekenen(pg, xPos, yPos, kaartBreedte, kaartHoogte);
-      xPos += (( getRechts().size() * (kaartBreedte + SPACE) ) > maxRijBreedte) ? kaartBreedte/3 : kaartBreedte + SPACE;
-    }
-    //Teken Plaats Rechts
-    optieRechts.tekenen(pg, xPos, yPos, kaartBreedte, kaartHoogte);
-
-    //    if ((getRechts().size() * kaartBreedte+SPACE) > maxRijBreedte)
-    //    {
-    //      xPos += (kaartBreedte/3 + kaartBreedte/3 + SPACE);
-    //    }
+    renderSide(yPos, true, getLinks(), optieLinks);
+    renderSide(yPos, false, getRechts(), optieRechts);
 
     image(pg, pos.x, pos.y);
+  }
+  
+  void renderSide(int yPos, boolean links,  ArrayList<Kaart> kaarten, Plaats optie)
+  {
+    boolean overMax = ( kaarten.size() * (kaartBreedte + SPACE) ) > maxRijBreedte;
+    
+    int xPos = pg.width / 2;
+    int xPosChange = overMax ? kaartBreedte / 3 : kaartBreedte + SPACE;
+    
+    if (links) {
+      xPos -= (kaartBreedte+SPACE);
+      xPosChange *= -1;
+    } else {
+      xPos += (kaartBreedte+SPACE);
+    }
+    
+    for (Kaart k : kaarten)
+    {
+      k.tekenen(pg, xPos, yPos, kaartBreedte, kaartHoogte);
+      xPos += xPosChange;
+    }
+    //Teken Plaats Links
+    optie.tekenen(pg, xPos + (overMax ? (links ? -1 : 1) * (2 * kaartBreedte / 3 + SPACE) : 0), yPos, kaartBreedte, kaartHoogte);
   }
 
 
@@ -85,6 +86,11 @@ class Row
     alle.add(midden);
     alle.addAll(rechts);
 
+    for (Kaart kaart : alle)
+    {
+      // invalidate image cache
+      kaart.image = null;
+    }
     schud(alle);
 
     links.clear();

@@ -1,22 +1,29 @@
 void runGameLogic(Row rij, boolean links, boolean hoger)
 {
-  println("runGameLogic()");
-  kaartTellerDezeBeurt++;
-  langsteDezeBeurt = langsteDezeBeurt || isLangsteRij(rij);
-  if (kaartTellerDezeBeurt >= MIN_KAARTEN_PER_BEURT && langsteDezeBeurt) geefVolgendeWeer = true;
+  try {
+    mutex.acquire();
+    println("runGameLogic()");
+    kaartTellerDezeBeurt++;
+    langsteDezeBeurt = langsteDezeBeurt || isLangsteRij(rij);
+    if (kaartTellerDezeBeurt >= MIN_KAARTEN_PER_BEURT && langsteDezeBeurt) geefVolgendeWeer = true;
 
-  if (Deck.isEmpty()) Deck = createDeck();
-  Kaart k = Deck.pop();
-  if (!rij.addKaart(k, links, hoger))
-  {
-    println("drink " + rij.getStraf(k, links) + " keer");
-    geefStrafWeer = true;
-    straf = new strafvenster(rij.getStraf(k, links));
-    ArrayList<Kaart> eruit = rij.bijFout(k);
-    Deck.addAll(eruit);
-    if (RESET_BIJ_FOUT) {
-      resetTellers();
+    if (Deck.isEmpty()) Deck = createDeck();
+    Kaart k = Deck.pop();
+    if (!rij.addKaart(k, links, hoger))
+    {
+      println("drink " + rij.getStraf(k, links) + " keer");
+      geefStrafWeer = true;
+      straf = new strafvenster(rij.getStraf(k, links));
+      ArrayList<Kaart> eruit = rij.bijFout(k);
+      Deck.addAll(eruit);
+      if (RESET_BIJ_FOUT) {
+        resetTellers();
+      }
     }
+    mutex.release();
+  } 
+  catch (InterruptedException e) {
+    e.printStackTrace();
   }
 }
 
@@ -94,14 +101,22 @@ void stelUIin()
 }
 
 void render() {
-  println("render()");
-  background(0);
-  if (geefStrafWeer && straf!=null)
-  {
-    straf.render();
-  } else
-  {
-    renderBoard();
+  try {
+    mutex.acquire();
+    println("render()");
+    background(0);
+    if (geefStrafWeer && straf!=null)
+    {
+      straf.render();
+    }
+    else
+    {
+      renderBoard();
+    }
+    mutex.release();
+  } 
+  catch (InterruptedException e) {
+    e.printStackTrace();
   }
 }
 
@@ -132,11 +147,11 @@ public void schud(ArrayList<Kaart> pak)
 {
   println("schud()");
   // Fisher-Yates shuffle
-  for (int i = 0; i < pak.size(); i++)
-  {
-    int nieuwePositie = (int) (Math.random() * pak.size());
-    Kaart huidig = pak.get(i);
-    pak.set(i, pak.get(nieuwePositie));
-    pak.set(nieuwePositie, huidig);
-  }
+  //for (int i = 0; i < pak.size(); i++)
+  //{
+  //  int nieuwePositie = (int) (Math.random() * pak.size());
+  //  Kaart huidig = pak.get(i);
+  //  pak.set(i, pak.get(nieuwePositie));
+  //  pak.set(nieuwePositie, huidig);
+  //}
 }

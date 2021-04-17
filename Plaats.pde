@@ -16,7 +16,9 @@ class Plaats extends Hitbox
 
   public void onClick()
   {
+    if (geselecteerd != null) changed.add(geselecteerd.rij);
     geselecteerd = this;
+    changed.add(rij);
   }
 
   void tekenen(PGraphics canvas, int xPos, int yPos, int plaatsBreedte, int plaatsHoogte)
