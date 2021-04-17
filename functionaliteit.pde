@@ -137,11 +137,11 @@ public void schud(ArrayList<Kaart> pak)
 {
   println("schud()");
   // Fisher-Yates shuffle
-  //for (int i = 0; i < pak.size(); i++)
-  //{
-  //  int nieuwePositie = (int) (Math.random() * pak.size());
-  //  Kaart huidig = pak.get(i);
-  //  pak.set(i, pak.get(nieuwePositie));
-  //  pak.set(nieuwePositie, huidig);
-  //}
+  for (int i = 0; i < pak.size(); i++)
+  {
+    int nieuwePositie = (int) (Math.random() * pak.size());
+    Kaart huidig = pak.get(i);
+    pak.set(i, pak.get(nieuwePositie));
+    pak.set(nieuwePositie, huidig);
+  }
 }
