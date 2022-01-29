@@ -49,8 +49,11 @@ class knophogerlager extends Hitbox
   void render()
   {
     ui.pgUI.beginDraw();
+    ui.pgUI.strokeWeight(10);
+    ui.pgUI.stroke(255,255,255);
     ui.pgUI.fill(fillColor);
     ui.pgUI.rect(pos.x, pos.y, dim.x, dim.y);
+    ui.pgUI.fill(255,255,255);
     ui.pgUI.endDraw();
   }
 
@@ -76,11 +79,15 @@ class volgendeKnop extends Hitbox implements Render
   
   void render()
   {
-    ui.pgUI.beginDraw();
+    ui.pgUI.beginDraw(); 
     if (geefVolgendeWeer) {
+      ui.pgUI.strokeWeight(10);
+      ui.pgUI.stroke(255,255,255);
       ui.pgUI.fill(0, 0, 255);
     } else {
       ui.pgUI.fill(0);
+      ui.pgUI.stroke(0,0,0);
+      ui.pgUI.strokeWeight(0);
     }
     ui.pgUI.rect(pos.x, pos.y, dim.x, dim.y);
     ui.pgUI.endDraw();
@@ -101,7 +108,7 @@ class UI implements Render
   volgendeKnop[] KnoppenVolgende;
   
   UI() {
-    pgUI = createGraphics(width, height, P2D);
+    pgUI = createGraphics(width, height); //Hiuer stond renderer
     pgUI.beginDraw();
     pgUI.rectMode(CENTER);
     pgUI.noStroke();
@@ -128,9 +135,13 @@ class strafvenster extends Hitbox
 {
   int sips;
   PVector pos, dim;
+  Kaart getrokken, opTafel;
 
-  strafvenster(int sips)
+
+  strafvenster(Kaart getrokken, Kaart opTafel, int sips)
   {
+    this.getrokken = getrokken;
+    this.opTafel = opTafel;
     pos = new PVector(pgStraf.width/2, pgStraf.height/2);
     dim = new PVector(pgStraf.width/2, pgStraf.height/2);
 
@@ -146,10 +157,16 @@ class strafvenster extends Hitbox
   {
     pgStraf.beginDraw();
     pgStraf.clear();
-    pgStraf.fill(255, 200, 0, 200);
-    pgStraf.rect(pos.x, pos.y, dim.x, dim.y);
     pgStraf.fill(0, 0, 0);
-    pgStraf.text(sips + " SLOK" + (sips != 1 ? "KEN" : ""), pos.x, pos.y);
+    pgStraf.stroke(255,255,255);
+    pgStraf.strokeWeight(10);
+    pgStraf.rect(pos.x, pos.y, dim.x, dim.y);
+    pgStraf.fill(255, 255, 255);
+    pgStraf.textAlign(CENTER, CENTER);
+    pgStraf.text(sips + " SLOK" + (sips != 1 ? "KEN" : ""), pos.x+80, pos.y+80);
+    pgStraf.text(">", pos.x+10, pos.y-170);
+    getrokken.tekenen(pgStraf,int(pos.x)-(kaartBreedte/2)-150,int(pos.y)-230, kaartBreedte, kaartHoogte);
+    opTafel.tekenen(pgStraf, int(pos.x)-(kaartBreedte/2)+150, int(pos.y)-230, kaartBreedte, kaartHoogte);
     pgStraf.endDraw();
     image(pgStraf, 0, 0);
   }

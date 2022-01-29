@@ -11,9 +11,8 @@ void runGameLogic(Row rij, boolean links, boolean hoger)
     Kaart k = Deck.pop();
     if (!rij.addKaart(k, links, hoger))
     {
-      println("drink " + rij.getStraf(k, links) + " keer");
       geefStrafWeer = true;
-      straf = new strafvenster(rij.getStraf(k, links));
+      straf = new strafvenster(k,rij.getUiterst(links), rij.getStraf(k,links));
       ArrayList<Kaart> eruit = rij.bijFout(k);
       Deck.addAll(eruit);
       if (RESET_BIJ_FOUT) {
@@ -92,7 +91,7 @@ void stelUIin()
 
   ui = new UI();
 
-  pgStraf = createGraphics(width, height, P2D);
+  pgStraf = createGraphics(width, height); // Hier stond renderer
   pgStraf.beginDraw();
   pgStraf.rectMode(CENTER);
   pgStraf.textFont(uiFont);

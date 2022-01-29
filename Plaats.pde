@@ -27,13 +27,20 @@ class Plaats extends Hitbox
     y1 = int( yPos + rij.pos.y - plaatsHoogte / 2);
     x2 = int( xPos + plaatsBreedte/2 + rij.pos.x );
     y2 = int( yPos + plaatsHoogte/2 + rij.pos.y );
-
-
     canvas.beginDraw();
     if (this.equals(geselecteerd))
-      canvas.fill(0, 100, 0);
+    {
+      canvas.fill(0, 255, 0);
+      canvas.strokeWeight(10);
+      canvas.stroke(255,255,255);
+    }
+    
     else
-      canvas.fill(100, 0, 0);
+    {
+      canvas.fill(75, 0, 0);
+      canvas.strokeWeight(0);
+    }
+      
     canvas.rect(xPos, yPos, plaatsBreedte, plaatsHoogte);
     canvas.endDraw();
   }

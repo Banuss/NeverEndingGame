@@ -9,7 +9,6 @@ PFont uiFont;
 PGraphics pgStraf;
 UI ui;
 
-
 final Semaphore mutex = new Semaphore(1, true);
 ArrayDeque<Kaart> Deck;
 Row[] Speelveld;
@@ -29,7 +28,7 @@ ArrayList<Row> langsteRijenBegin = new ArrayList<Row>();
 
 void settings() {
   loadSettings();
-  fullScreen(P2D, SCREEN_NUM);
+  fullScreen();
 }
 
 void setup() {
@@ -46,16 +45,15 @@ void setup() {
   Speelveld = generateSpeelveld();
   ui.KnoppenHoogLaag = generateHogerLager();
   ui.KnoppenVolgende = generateVolgende();
-
+  
   resetTellers();
 
   textAlign(CENTER, CENTER);
   fill(255);
   textFont(uiFont);
   textSize(200);
-  text("Loading...", width/2, height/2);
-
-  noLoop();
+  text("Vul alle glazen...", width/2, height/2);
+  //noLoop();
 }
 
 void draw()

@@ -10,7 +10,7 @@ class Row implements Render
 
   Row(Kaart midden, PVector position)
   {
-    pg = createGraphics(width, height / RIJEN, P2D);
+    pg = createGraphics(width, height / RIJEN); //Hier stond renderer
     pg.beginDraw();
     pg.imageMode(CENTER);
     pg.rectMode(CENTER);
@@ -142,6 +142,14 @@ class Row implements Render
   {
     return kant.isEmpty() ? midden : kant.get(kant.size() - 1);
   }
+  
+  public Kaart getUiterst(boolean linkerkant)
+  {
+      ArrayList<Kaart> welke_kant;
+      welke_kant = linkerkant ?  links : rechts;
+      return welke_kant.isEmpty()? midden : welke_kant.get(welke_kant.size()-1);
+  }
+  
 
   public Kaart getMidden()
   {

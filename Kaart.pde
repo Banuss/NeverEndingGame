@@ -18,6 +18,5 @@ class Kaart
     canvas.beginDraw();
     canvas.image(image, xPos, yPos, kaartBreedte, kaartHoogte);
     canvas.endDraw();
-    
   }
 }
