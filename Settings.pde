@@ -11,6 +11,7 @@ boolean DUBBEL_BIJ_DUBBEL = true;
 boolean REALTIME_LANGSTE_RIJ = false;
 long CLICK_COOLDOWN = 0;
 int SCREEN_BORDER = 0;
+boolean STRAF_DUBBEL_KLIK = true;
 
 void loadSettings()
 {
@@ -58,6 +59,9 @@ void loadSettings()
         case "SCREEN_BORDER":
           SCREEN_BORDER = Integer.parseInt(setting.substring(separatorPos+1));
           break;
+        case "STRAF_DUBBEL_KLIK":
+          STRAF_DUBBEL_KLIK = Boolean.parseBoolean(setting.substring(separatorPos+1));
+          break;
         default:
           println("Unknown setting: \"" + setting + "\"");
           break;
@@ -76,7 +80,8 @@ void loadSettings()
     "REALTIME_LANGSTE_RIJ=" + REALTIME_LANGSTE_RIJ, 
     "SCREEN_NUM=" + SCREEN_NUM,
     "CLICK_COOLDOWN=" + CLICK_COOLDOWN,
-    "SCREEN_BORDER=" + SCREEN_BORDER
+    "SCREEN_BORDER=" + SCREEN_BORDER,
+    "STRAF_DUBBEL_KLIK="+STRAF_DUBBEL_KLIK
   };
 
   for (String setting : settings)

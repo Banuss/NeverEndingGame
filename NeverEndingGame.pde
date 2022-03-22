@@ -32,6 +32,7 @@ int lastX, lastY;
 void settings() {
   loadSettings();
   fullScreen();
+  //size(1366, 768);
 }
 
 void setup() {
@@ -86,13 +87,20 @@ void mousePressed() {
       lastY = mouseY;
       if (geefStrafWeer)
       {
-        if (straf != null )
+        if (!straf.clicked)
         {
-          geefStrafWeer = false;
-          straf.destroy();
-          geselecteerd = null;
+          straf.clicked = true;
         }
-        redraw();
+        else
+        {
+          if (straf != null )
+          {
+            geefStrafWeer = false;
+            straf.destroy();
+            geselecteerd = null;
+          }
+          redraw();
+        }
         return;
       }
     
