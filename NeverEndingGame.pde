@@ -26,6 +26,9 @@ boolean geefStrafWeer;
 strafvenster straf;
 ArrayList<Row> langsteRijenBegin = new ArrayList<Row>();
 
+long nowpress, lastpress;
+int lastX, lastY;
+
 void settings() {
   loadSettings();
   fullScreen();
@@ -70,28 +73,37 @@ void draw()
   }
 }
 
+
+
+
 void mousePressed() {
   //println("Geklikt op: "+mouseX + ":" + mouseY);
-
-  if (geefStrafWeer)
-  {
-    if (straf != null )
+  nowpress = millis();
+    if ((nowpress > ( lastpress + CLICK_COOLDOWN))||getMouseDistance()>50) 
     {
-      geefStrafWeer = false;
-      straf.destroy();
-      geselecteerd = null;
-    }
-    redraw();
-    return;
-  }
-
-  for (Hitbox hb : hitboxes)
-  {
-    if (hb.Match())
-    {
-      hb.onClick();
-      redraw();
-      return;
-    }
+      lastpress = nowpress;
+      lastX = mouseX;
+      lastY = mouseY;
+      if (geefStrafWeer)
+      {
+        if (straf != null )
+        {
+          geefStrafWeer = false;
+          straf.destroy();
+          geselecteerd = null;
+        }
+        redraw();
+        return;
+      }
+    
+      for (Hitbox hb : hitboxes)
+      {
+        if (hb.Match())
+        {
+          hb.onClick();
+          redraw();
+          return;
+        }
+      }
   }
 }

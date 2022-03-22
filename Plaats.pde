@@ -23,10 +23,10 @@ class Plaats extends Hitbox
 
   void tekenen(PGraphics canvas, int xPos, int yPos, int plaatsBreedte, int plaatsHoogte)
   {
-    x1 = int( xPos + rij.pos.x - plaatsBreedte / 2 );
-    y1 = int( yPos + rij.pos.y - plaatsHoogte / 2);
-    x2 = int( xPos + plaatsBreedte/2 + rij.pos.x );
-    y2 = int( yPos + plaatsHoogte/2 + rij.pos.y );
+    x1 = getXpos(int( xPos + rij.pos.x - plaatsBreedte / 2 ));
+    y1 = getYpos(int( yPos + rij.pos.y - plaatsHoogte / 2));
+    x2 = getXpos(int( xPos + plaatsBreedte/2 + rij.pos.x ));
+    y2 = getYpos(int( yPos + plaatsHoogte/2 + rij.pos.y ));
     canvas.beginDraw();
     if (this.equals(geselecteerd))
     {
@@ -37,7 +37,8 @@ class Plaats extends Hitbox
     
     else
     {
-      canvas.fill(75, 0, 0);
+      if(isLangsteRij(rij)) canvas.fill(0, 0, 75);
+      else canvas.fill(75, 0, 0);
       canvas.strokeWeight(0);
     }
       

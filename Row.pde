@@ -10,7 +10,7 @@ class Row implements Render
 
   Row(Kaart midden, PVector position)
   {
-    pg = createGraphics(width, height / RIJEN); //Hier stond renderer
+    pg = createGraphics(getNewWidth(), getNewHeight() / RIJEN); //Hier stond renderer
     pg.beginDraw();
     pg.imageMode(CENTER);
     pg.rectMode(CENTER);
@@ -39,7 +39,7 @@ class Row implements Render
     renderSide(yPos, true, getLinks(), optieLinks);
     renderSide(yPos, false, getRechts(), optieRechts);
 
-    image(pg, pos.x, pos.y);
+    image(pg, getXpos((int)pos.x), getYpos((int)pos.y));
   }
   
   void renderSide(int yPos, boolean links,  ArrayList<Kaart> kaarten, Plaats optie)

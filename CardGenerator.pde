@@ -26,7 +26,7 @@ private static final String cardFilenameFormat = "%s_%s.png";
 
 void generateCardfaces() {
   print("Generating cards...");
-  PGraphics PG_card = createGraphics(640, 890, P2D);
+  PGraphics PG_card = createGraphics(640, 890);
   String[] ranks = getRanks();
   Suit[] suits = Suit.values();
   PImage background = loadImage("settings/bg.png");

@@ -65,7 +65,7 @@ void resetTellers()
 
 boolean isLangsteRij(Row teVergelijken)
 {
-  println("isLangsteRij()");
+  //println("isLangsteRij()");
   if (REALTIME_LANGSTE_RIJ)
   {
     int langste = 0;
@@ -81,17 +81,14 @@ boolean isLangsteRij(Row teVergelijken)
 void stelUIin()
 {
   println("stelUIin()");
-  kaartHoogte = ((height-(SPACE*(RIJEN+1)))/RIJEN);
+  kaartHoogte = ((getNewHeight()-(SPACE*(RIJEN+1)))/RIJEN);
   kaartBreedte = (kaartHoogte*2)/3;
   //Reserveer Links en Rechts Ruimte voor UI elements
-  uiHeight = (height - (4*SPACE))/3;
+  uiHeight = (getNewHeight() - (4*SPACE))/3;
   uiWidth = uiHeight/4;
-
-  maxRijBreedte = (width/2) - SPACE - uiWidth - SPACE - kaartBreedte - SPACE - SPACE - SPACE - (kaartBreedte/2);
-
+  maxRijBreedte = (getNewWidth()/2) - SPACE - uiWidth - SPACE - kaartBreedte - SPACE - SPACE - SPACE - (kaartBreedte/2);
   ui = new UI();
-
-  pgStraf = createGraphics(width, height); // Hier stond renderer
+  pgStraf = createGraphics(getNewWidth(), getNewHeight()); // Hier stond renderer
   pgStraf.beginDraw();
   pgStraf.rectMode(CENTER);
   pgStraf.textFont(uiFont);
@@ -103,7 +100,7 @@ void stelUIin()
 void render() {
   try {
     mutex.acquire();
-    println("render()");
+    //println("render()");
     background(0);
     if (geefStrafWeer && straf!=null)
     {
@@ -122,7 +119,7 @@ void render() {
 
 void renderBoard()
 {
-  println("renderBoard()");
+  //println("renderBoard()");
 
   ui.render();
 
@@ -130,6 +127,12 @@ void renderBoard()
   {
     row.render();
   }
+}
+
+int getMouseDistance()
+{
+  int result = (int)sqrt(pow(mouseX - lastX,2)+pow(mouseY-lastY,2));
+  return result;
 }
 
 public void schud(ArrayList<Kaart> pak)

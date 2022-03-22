@@ -9,6 +9,8 @@ boolean RESET_BIJ_FOUT = true;
 boolean VEREIS_LANGSTE_RIJ = true;
 boolean DUBBEL_BIJ_DUBBEL = true;
 boolean REALTIME_LANGSTE_RIJ = false;
+long CLICK_COOLDOWN = 0;
+int SCREEN_BORDER = 0;
 
 void loadSettings()
 {
@@ -50,6 +52,12 @@ void loadSettings()
         case "SCREEN_NUM":
           SCREEN_NUM = Integer.parseInt(setting.substring(separatorPos+1));
           break;
+        case "CLICK_COOLDOWN":
+          CLICK_COOLDOWN = Long.parseLong(setting.substring(separatorPos+1));
+          break;
+        case "SCREEN_BORDER":
+          SCREEN_BORDER = Integer.parseInt(setting.substring(separatorPos+1));
+          break;
         default:
           println("Unknown setting: \"" + setting + "\"");
           break;
@@ -66,7 +74,9 @@ void loadSettings()
     "VEREIS_LANGSTE_RIJ=" + VEREIS_LANGSTE_RIJ, 
     "DUBBEL_BIJ_DUBBEL=" + DUBBEL_BIJ_DUBBEL, 
     "REALTIME_LANGSTE_RIJ=" + REALTIME_LANGSTE_RIJ, 
-    "SCREEN_NUM=" + SCREEN_NUM
+    "SCREEN_NUM=" + SCREEN_NUM,
+    "CLICK_COOLDOWN=" + CLICK_COOLDOWN,
+    "SCREEN_BORDER=" + SCREEN_BORDER
   };
 
   for (String setting : settings)
@@ -75,4 +85,24 @@ void loadSettings()
   }
 
   saveStrings(gameSettingsLocation, settings);
+}
+
+int getNewHeight()
+{
+  return height - (2*SCREEN_BORDER);
+}
+
+int getNewWidth()
+{
+  return width - (2*SCREEN_BORDER);
+}
+
+int getXpos(int old)
+{
+  return old + SCREEN_BORDER;
+}
+
+int getYpos(int old)
+{
+  return old + SCREEN_BORDER;
 }

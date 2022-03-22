@@ -40,10 +40,10 @@ class knophogerlager extends Hitbox
     fillColor = (hoger) ? color(0, 255, 0) : color(255, 0, 0);
     pos = new PVector( xPos, yPos );
     dim = new PVector( plaatsBreedte, plaatsHoogte );
-    x1 = int(pos.x - dim.x/2);
-    x2 = int(pos.x + dim.x/2);
-    y1 = int(pos.y - dim.y/2);
-    y2 = int(pos.y + dim.y/2);
+    x1 = getXpos(int(pos.x - dim.x/2));
+    x2 = getXpos(int(pos.x + dim.x/2));
+    y1 = getYpos(int(pos.y - dim.y/2));
+    y2 = getYpos(int(pos.y + dim.y/2));
   }
 
   void render()
@@ -71,10 +71,10 @@ class volgendeKnop extends Hitbox implements Render
   {
     pos = new PVector( xPos, yPos );
     dim = new PVector( knopBreedte, knopHoogte );
-    x1 = int(pos.x - dim.x/2);
-    x2 = int(pos.x + dim.x/2);
-    y1 = int(pos.y - dim.y/2);
-    y2 = int(pos.y + dim.y/2);
+    x1 = getXpos(int(pos.x - dim.x/2));
+    x2 = getXpos(int(pos.x + dim.x/2));
+    y1 = getYpos(int(pos.y - dim.y/2));
+    y2 = getYpos(int(pos.y + dim.y/2));
   }
   
   void render()
@@ -108,7 +108,7 @@ class UI implements Render
   volgendeKnop[] KnoppenVolgende;
   
   UI() {
-    pgUI = createGraphics(width, height); //Hiuer stond renderer
+    pgUI = createGraphics(getNewWidth(), getNewHeight()); //Hiuer stond renderer
     pgUI.beginDraw();
     pgUI.rectMode(CENTER);
     pgUI.noStroke();
@@ -127,7 +127,7 @@ class UI implements Render
     {
       knop.render();
     }
-    image(pgUI, 0, 0);
+    image(pgUI, getXpos(0), getYpos(0));
   }
 }
 
@@ -145,10 +145,10 @@ class strafvenster extends Hitbox
     pos = new PVector(pgStraf.width/2, pgStraf.height/2);
     dim = new PVector(pgStraf.width/2, pgStraf.height/2);
 
-    x1 = int(pos.x - dim.x/2);
-    x2 = int(pos.x + dim.x/2);
-    y1 = int(pos.y - dim.y/2);
-    y2 = int(pos.y + dim.y/2);
+    x1 = getXpos(int(pos.x - dim.x/2));
+    x2 = getXpos(int(pos.x + dim.x/2));
+    y1 = getYpos(int(pos.y - dim.y/2));
+    y2 = getYpos(int(pos.y + dim.y/2));
 
     this.sips = sips;
   }
@@ -168,7 +168,7 @@ class strafvenster extends Hitbox
     getrokken.tekenen(pgStraf,int(pos.x)-(kaartBreedte/2)-150,int(pos.y)-230, kaartBreedte, kaartHoogte);
     opTafel.tekenen(pgStraf, int(pos.x)-(kaartBreedte/2)+150, int(pos.y)-230, kaartBreedte, kaartHoogte);
     pgStraf.endDraw();
-    image(pgStraf, 0, 0);
+    image(pgStraf, getXpos(0), getYpos(0));
   }
 
   public void onClick() {
